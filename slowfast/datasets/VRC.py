@@ -8,7 +8,7 @@ import pandas
 import torch
 import torch.utils.data
 from torchvision import transforms
-
+import cv2
 import slowfast.utils.logging as logging
 from slowfast.utils.env import pathmgr
 
@@ -95,10 +95,8 @@ class VRC(torch.utils.data.Dataset):
         if self.mode in ["train", "val"]:
             self._num_clips = 1
         elif self.mode in ["test"]:
-            self._num_clips = (
-                cfg.TEST.NUM_ENSEMBLE_VIEWS * cfg.TEST.NUM_SPATIAL_CROPS
-            )
-
+            self._num_clips = 1 # important for our work since we can only allow one clip per video
+            
         logger.info("Constructing VRC {}...".format(mode))
         self._construct_loader()
         self.aug = False
@@ -176,6 +174,20 @@ class VRC(torch.utils.data.Dataset):
                 len(self._path_to_videos), self.skip_rows, path_to_file
             )
         )
+    
+    def flip_label(self, label):
+        if label not in range(13):
+            # incorrect label
+            return None
+        elif label in [0, 11, 12]:
+            # symmetric gestures
+            return label
+        
+        # switch even and odd labels
+        if label % 2 == 0:
+            return label-1
+        else:
+            return label+1
 
     def _set_epoch_num(self, epoch):
         self.epoch = epoch
@@ -206,33 +218,35 @@ class VRC(torch.utils.data.Dataset):
 
         ## init
         ##### what is this "dataset_RC23" if ???
-        if 'dataset_RC23' in folder_name:
-            # NOTE: rotation is not currently used as an input to the model
-            position = np.array(csv_row[2:5], dtype = 'f')
-            rotation = np.array(csv_row[5:8], dtype = 'f')
-        else:
-            # center of the field facing the referee, height 0.55[m]
-            position = np.array([0.0, 0.55, 0.0])
-            rotation = np.array([0.0, 0.0, 0.0])
+        folder_path = self._path_to_videos[index]
+        # Not really required since we are not using 
+        # if 'SYN' in folder_path:
+        #     # NOTE: rotation is not currently used as an input to the model
+        #     position = np.array(csv_row[2:5], dtype = 'f')
+        #     rotation = np.array(csv_row[5:8], dtype = 'f')
+        # else:
+        #     # center of the field facing the referee, height 0.55[m]
+        #     position = np.array([0.0, 0.55, 0.0])
+        #     rotation = np.array([0.0, 0.0, 0.0])
 
         label = self._labels[index]
         folder_path = self._path_to_videos[index]
         imgs = [name for name in os.listdir(folder_path)]
         imgs = sorted(imgs) # NEED TO SORT!
 
-        if self.use_position:
-            pos_data = np.zeros(3)
-        if self.use_newer_model:
-            uncertainty_metric = 0
+        # if self.use_position:
+        #     pos_data = np.zeros(3)
+        # if self.use_newer_model:
+        #     uncertainty_metric = 0
 
-        label_onehot = np.zeros(self.num_classes)
         data = np.zeros((self.cfg.DATA.NUM_FRAMES, self.cfg.DATA.IMAGE_HEIGHT, self.cfg.DATA.IMAGE_WIDTH, self.cfg.DATA.CHANNELS))
 
         flip = np.random.randint(2) # flip this entire sequence
         if flip:
-            label = flip_label(label)
-            position[0] *= (-1) # flip x coordinate sign
-            rotation[1] *= (-1) # flip rotation around y axis sign
+            label = self.flip_label(label) 
+            # Not needed tbh
+            # position[0] *= (-1) # flip x coordinate sign
+            # rotation[1] *= (-1) # flip rotation around y axis sign
 
         if self.augment:
             # randomize values for contrast and brightness
@@ -264,10 +278,10 @@ class VRC(torch.utils.data.Dataset):
                 image = cv2.resize(image, (self.image_width, self.image_height))
 
                 # update camera position for cropping
-                position[0] *= crop_ratio # x coord 0 at referee
-                z_dist_referee = position[0] + 3.0
-                z_dist_referee *= crop_ratio
-                position[2] = z_dist_referee - 3.0 # z coord -3.0 at referee
+                # position[0] *= crop_ratio # x coord 0 at referee
+                # z_dist_referee = position[0] + 3.0
+                # z_dist_referee *= crop_ratio
+                # position[2] = z_dist_referee - 3.0 # z coord -3.0 at referee
                 
                 # noise
                 # max_noise = np.random.randint(1,20)
@@ -287,26 +301,26 @@ class VRC(torch.utils.data.Dataset):
             data[idx, :, :, 0] = image[:, :, 0] / 255*scale + add
             data[idx, :, :, 1] = image[:, :, 1] / 255*scale + add
             data[idx, :, :, 2] = image[:, :, 2] / 255*scale + add
-
+        ## Not needed tbh
         # store camera position data from csv file
-        if self.use_position:
-            for idx in range(3):
-                position[idx] += np.random.uniform(-0.1,0.1) # randomize a bit
-            # pos_data[folder] = position
+        # if self.use_position:
+        #     for idx in range(3):
+        #         position[idx] += np.random.uniform(-0.1,0.1) # randomize a bit
+        #     # pos_data[folder] = position
 
         # batch_labels[folder, label] = 1
 
         #### Below here I did not check!! Will update
-        if self.use_position:
-            batch_data = (batch_data, pos_data)
-            return (batch_data, batch_labels)
-        if self.use_newer_model:
-            batch_data = (batch_data, pos_data)
-            batch_labels = (batch_labels, uncertainty_metric)
-            return (batch_data, batch_labels)
+        # if self.use_position:
+        #     batch_data = (batch_data, pos_data)
+        #     return (batch_data, batch_labels)
+        # if self.use_newer_model:
+        #     batch_data = (batch_data, pos_data)
+        #     batch_labels = (batch_labels, uncertainty_metric)
+        #     return (batch_data, batch_labels)
         return (batch_data, batch_labels)
-
-        
+        # How the return should look like:
+        return frames, label, index, time_idx, {}
 
 
 

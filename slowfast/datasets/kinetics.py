@@ -8,7 +8,7 @@ import pandas
 import torch
 import torch.utils.data
 from torchvision import transforms
-
+import cv2
 import slowfast.utils.logging as logging
 from slowfast.utils.env import pathmgr
 
@@ -37,11 +37,13 @@ class Kinetics(torch.utils.data.Dataset):
     video with uniform cropping. For uniform cropping, we take the left, center,
     and right crop if the width is larger than height, or take top, center, and
     bottom crop if the height is larger than the width.
+
+    VRC video loader. 
     """
 
     def __init__(self, cfg, mode, num_retries=100):
         """
-        Construct the Kinetics video loader with a given csv file. The format of
+        Construct the VRC video loader with a given csv file. The format of
         the csv file is:
         ```
         path_to_video_1 label_1
@@ -63,9 +65,16 @@ class Kinetics(torch.utils.data.Dataset):
             "train",
             "val",
             "test",
-        ], "Split '{}' not supported for Kinetics".format(mode)
+        ], "Split '{}' not supported for VRC".format(mode)
         self.mode = mode
         self.cfg = cfg
+
+        ## to set
+        self.normalize = True
+        self.use_position = False  
+        self.use_newer_model = False  
+        self.num_classes = 13
+
         self.p_convert_gray = self.cfg.DATA.COLOR_RND_GRAYSCALE
         self.p_convert_dt = self.cfg.DATA.TIME_DIFF_PROB
         self._video_meta = {}
@@ -86,11 +95,9 @@ class Kinetics(torch.utils.data.Dataset):
         if self.mode in ["train", "val"]:
             self._num_clips = 1
         elif self.mode in ["test"]:
-            self._num_clips = (
-                cfg.TEST.NUM_ENSEMBLE_VIEWS * cfg.TEST.NUM_SPATIAL_CROPS
-            )
-
-        logger.info("Constructing Kinetics {}...".format(mode))
+            self._num_clips = 1 # important for our work since we can only allow one clip per video
+            
+        logger.info("Constructing VRC {}...".format(mode))
         self._construct_loader()
         self.aug = False
         self.rand_erase = False
@@ -108,12 +115,11 @@ class Kinetics(torch.utils.data.Dataset):
         Construct the video loader.
         """
         path_to_file = os.path.join(
-            self.cfg.DATA.PATH_TO_DATA_DIR, "{}.csv".format(self.mode)
+            self.cfg.DATA.PATH_TO_DATA_DIR, "small_{}.csv".format(self.mode)
         )
         assert pathmgr.exists(path_to_file), "{} dir not found".format(
             path_to_file
         )
-
         self._path_to_videos = []
         self._labels = []
         self._spatial_temporal_idx = []
@@ -121,6 +127,8 @@ class Kinetics(torch.utils.data.Dataset):
         self.chunk_epoch = 0
         self.epoch = 0.0
         self.skip_rows = self.cfg.DATA.SKIP_ROWS
+
+        # self._path_to_videos = np.random.permutation(open(path_to_file).readlines())
 
         with pathmgr.open(path_to_file, "r") as f:
             if self.use_chunk_loading:
@@ -131,35 +139,39 @@ class Kinetics(torch.utils.data.Dataset):
                 fetch_info = path_label.split(
                     self.cfg.DATA.PATH_LABEL_SEPARATOR
                 )
-                if len(fetch_info) == 2:
-                    path, label = fetch_info
-                elif len(fetch_info) == 3:
-                    path, fn, label = fetch_info
-                elif len(fetch_info) == 1:
-                    path, label = fetch_info[0], 0
-                else:
-                    raise RuntimeError(
-                        "Failed to parse video fetch {} info {} retries.".format(
-                            path_to_file, fetch_info
-                        )
-                    )
+                path = fetch_info[0]
+                label = fetch_info[-1]
                 for idx in range(self._num_clips):
                     self._path_to_videos.append(
-                        os.path.join(self.cfg.DATA.PATH_PREFIX, path)
+                        os.path.join(self.cfg.DATA.PATH_TO_DATA_DIR, path)
                     )
                     self._labels.append(int(label))
                     self._spatial_temporal_idx.append(idx)
                     self._video_meta[clip_idx * self._num_clips + idx] = {}
         assert (
             len(self._path_to_videos) > 0
-        ), "Failed to load Kinetics split {} from {}".format(
+        ), "Failed to load VRC split {} from {}".format(
             self._split_idx, path_to_file
         )
         logger.info(
-            "Constructing kinetics dataloader (size: {} skip_rows {}) from {} ".format(
+            "Constructing VRC dataloader (size: {} skip_rows {}) from {} ".format(
                 len(self._path_to_videos), self.skip_rows, path_to_file
             )
         )
+    
+    def flip_label(self, label):
+        if label not in range(13):
+            # incorrect label
+            return None
+        elif label in [0, 11, 12]:
+            # symmetric gestures
+            return label
+        
+        # switch even and odd labels
+        if label % 2 == 0:
+            return label-1
+        else:
+            return label+1
 
     def _set_epoch_num(self, epoch):
         self.epoch = epoch
@@ -177,6 +189,84 @@ class Kinetics(torch.utils.data.Dataset):
             return self._get_chunk(path_to_file, chunksize)
         else:
             return pandas.array(chunk.values.flatten(), dtype="string")
+
+    def __getitem__(self, index):
+        folder_path = self._path_to_videos[index]
+        label = self._labels[index]
+        folder_path = self._path_to_videos[index]
+        imgs = [name for name in os.listdir(folder_path)]
+        imgs = sorted(imgs) # NEED TO SORT!
+
+        data = np.zeros((self.cfg.DATA.NUM_FRAMES, self.cfg.DATA.IMAGE_HEIGHT, self.cfg.DATA.IMAGE_WIDTH, self.cfg.DATA.CHANNELS))
+
+        flip = np.random.randint(2) # flip this entire sequence
+        if flip:
+            label = self.flip_label(label) 
+
+        if self.augment:
+            # randomize values for contrast and brightness
+            alpha = np.random.uniform(0.75, 1.25)
+            beta = np.random.uniform(-15,15)
+        else:
+            alpha, beta = 1, 0
+
+        for idx in range(self.cfg.DATA.NUM_FRAMES): # take frames starting from the beginning (even if less frames needed)
+            image_path = os.path.join(folder_path, imgs[idx])
+            image = cv2.imread(image_path).astype(np.float32) # idx counts from 0 upwards
+            image = cv2.resize(image, (self.cfg.DATA.IMAGE_WIDTH, self.cfg.DATA.IMAGE_HEIGHT))
+
+            if flip:
+                image = cv2.flip(image, 1)
+
+            if self.augment:
+                # small random changes in contrast and brightness
+                alpha += np.random.uniform(-0.05,0.05)
+                beta += np.random.uniform(-2,2)
+
+                # random crop (not too small so don't cut of referee)
+                crop_ratio = np.random.uniform(0.9, 0.99)
+                crop_width = int(crop_ratio * self.image_width)
+                crop_height = int(crop_ratio * self.image_height)
+                x = np.random.randint(0, self.image_width - crop_width)
+                y = np.random.randint(0, self.image_height - crop_height)
+                image = image[y:y+crop_height, x:x+crop_width]
+                image = cv2.resize(image, (self.image_width, self.image_height))
+
+            image = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
+            if self.normalize:
+                scale  = 2
+                add = -1
+            else:
+                scale = 1
+                add = 0
+
+            data[idx, :, :, 0] = image[:, :, 0] / 255*scale + add
+            data[idx, :, :, 1] = image[:, :, 1] / 255*scale + add
+            data[idx, :, :, 2] = image[:, :, 2] / 255*scale + add
+        ## Not needed tbh
+        # store camera position data from csv file
+        # if self.use_position:
+        #     for idx in range(3):
+        #         position[idx] += np.random.uniform(-0.1,0.1) # randomize a bit
+        #     # pos_data[folder] = position
+
+        # batch_labels[folder, label] = 1
+
+        #### Below here I did not check!! Will update
+        # if self.use_position:
+        #     batch_data = (batch_data, pos_data)
+        #     return (batch_data, batch_labels)
+        # if self.use_newer_model:
+        #     batch_data = (batch_data, pos_data)
+        #     batch_labels = (batch_labels, uncertainty_metric)
+        #     return (batch_data, batch_labels)
+        return (batch_data, batch_labels)
+        # How the return should look like:
+        return frames, label, index, time_idx, {}
+
+
+
+
 
     def __getitem__(self, index):
         """

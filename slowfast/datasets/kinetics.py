@@ -193,7 +193,6 @@ class Kinetics(torch.utils.data.Dataset):
     def __getitem__(self, index):
         folder_path = self._path_to_videos[index]
         label = self._labels[index]
-        folder_path = self._path_to_videos[index]
         imgs = [name for name in os.listdir(folder_path)]
         imgs = sorted(imgs) # NEED TO SORT!
 
@@ -260,7 +259,7 @@ class Kinetics(torch.utils.data.Dataset):
         #     batch_data = (batch_data, pos_data)
         #     batch_labels = (batch_labels, uncertainty_metric)
         #     return (batch_data, batch_labels)
-        return (batch_data, batch_labels)
+        return data, label, index, 0, {}
         # How the return should look like:
         return frames, label, index, time_idx, {}
 

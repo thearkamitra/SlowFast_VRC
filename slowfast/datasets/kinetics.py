@@ -251,13 +251,18 @@ class Kinetics(torch.utils.data.Dataset):
         #transform data dimension from (frames, height, width, channels) to (channels, frames, height, width)
         data = np.transpose(data, (3, 0, 1, 2))
         
+        slow_data = self.get_slow_data(data)   
+        frames = [slow_data, data]
         return data, label, index, 0, {}
         # How the return should look like:
         return frames, label, index, time_idx, {}
 
 
-
-
+    def get_slow_data(self, data, skip=2):
+        slow_data = np.zeros((self.CHANNELS, self.NUM_FRAMES//skip, self.IMAGE_HEIGHT, self.IMAGE_WIDTH))
+        for i in range(self.NUM_FRAMES//skip):
+            slow_data[:, i, :, :] = data[:, i*skip, :, :]
+        return slow_data
 
     def _gen_mask(self):
         if self.cfg.AUG.MASK_TUBE:

@@ -114,13 +114,14 @@ class VRC(torch.utils.data.Dataset):
         """
         Construct the video loader.
         """
+        breakpoint()
         path_to_file = os.path.join(
             self.cfg.DATA.PATH_TO_DATA_DIR, "{}.csv".format(self.mode)
         )
         assert pathmgr.exists(path_to_file), "{} dir not found".format(
             path_to_file
         )
-
+        breakpoint()
         self._path_to_videos = []
         self._labels = []
         self._spatial_temporal_idx = []
@@ -143,19 +144,6 @@ class VRC(torch.utils.data.Dataset):
 
                 path = fetch_info[0]
                 label = fetch_info[1]
-
-                # if len(fetch_info) == 2:
-                #     path, label = fetch_info
-                # elif len(fetch_info) > 2:
-                #     path, label, info = fetch_info
-                # elif len(fetch_info) == 1:
-                #     path, label = fetch_info[0], 0
-                # else:
-                #     raise RuntimeError(
-                #         "Failed to parse video fetch {} info {} retries.".format(
-                #             path_to_file, fetch_info
-                #         )
-                #     )
 
                 for idx in range(self._num_clips):
                     self._path_to_videos.append(
@@ -207,46 +195,17 @@ class VRC(torch.utils.data.Dataset):
             return pandas.array(chunk.values.flatten(), dtype="string")
 
     def __getitem__(self, index):
-        # seq_len = self.cfg.Train.BATCH_SIZE if self.mode in ["train", "val"] else self.cfg.Test.BATCH_SIZE
-        # [NOTE] Lukas: changed width and height to match cv2.resize format
-        # batch_data = np.zeros((seq_len, self.cfg.DATA.NUM_FRAMES, self.cfg.DATA.IMAGE_HEIGHT, self.cfg.DATA.IMAGE_WIDTH, self.cfg.DATA.CHANNELS))
-        # if self.use_position:  ## DISABLED
-        #     pos_data = np.zeros((seq_len, 3))
-        # if self.use_newer_model:  ## DISABLED
-        #     uncertainty_metric = np.zeros((seq_len, 1))
-        # batch_labels = np.zeros((seq_len, self.num_classes))
-
-        ## init
-        ##### what is this "dataset_RC23" if ???
         folder_path = self._path_to_videos[index]
-        # Not really required since we are not using 
-        # if 'SYN' in folder_path:
-        #     # NOTE: rotation is not currently used as an input to the model
-        #     position = np.array(csv_row[2:5], dtype = 'f')
-        #     rotation = np.array(csv_row[5:8], dtype = 'f')
-        # else:
-        #     # center of the field facing the referee, height 0.55[m]
-        #     position = np.array([0.0, 0.55, 0.0])
-        #     rotation = np.array([0.0, 0.0, 0.0])
-
         label = self._labels[index]
         folder_path = self._path_to_videos[index]
         imgs = [name for name in os.listdir(folder_path)]
         imgs = sorted(imgs) # NEED TO SORT!
-
-        # if self.use_position:
-        #     pos_data = np.zeros(3)
-        # if self.use_newer_model:
-        #     uncertainty_metric = 0
 
         data = np.zeros((self.cfg.DATA.NUM_FRAMES, self.cfg.DATA.IMAGE_HEIGHT, self.cfg.DATA.IMAGE_WIDTH, self.cfg.DATA.CHANNELS))
 
         flip = np.random.randint(2) # flip this entire sequence
         if flip:
             label = self.flip_label(label) 
-            # Not needed tbh
-            # position[0] *= (-1) # flip x coordinate sign
-            # rotation[1] *= (-1) # flip rotation around y axis sign
 
         if self.augment:
             # randomize values for contrast and brightness
@@ -276,19 +235,6 @@ class VRC(torch.utils.data.Dataset):
                 y = np.random.randint(0, self.image_height - crop_height)
                 image = image[y:y+crop_height, x:x+crop_width]
                 image = cv2.resize(image, (self.image_width, self.image_height))
-
-                # update camera position for cropping
-                # position[0] *= crop_ratio # x coord 0 at referee
-                # z_dist_referee = position[0] + 3.0
-                # z_dist_referee *= crop_ratio
-                # position[2] = z_dist_referee - 3.0 # z coord -3.0 at referee
-                
-                # noise
-                # max_noise = np.random.randint(1,20)
-                # noise = np.random.randint(0,max_noise,(self.image_height, self.image_width))
-                # zitter = np.zeros_like(image)
-                # zitter[:,:,1] = noise  
-                # image = cv2.add(image, zitter)
 
             image = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
             if self.normalize:

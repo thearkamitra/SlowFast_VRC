@@ -1,7 +1,7 @@
 TRAIN:
   # ENABLE: False # default True
   DATASET: kinetics
-  BATCH_SIZE: 128
+  BATCH_SIZE: 4
   EVAL_PERIOD: 10
   CHECKPOINT_PERIOD: 10
   AUTO_RESUME: True
@@ -14,7 +14,7 @@ X3D:
 TEST:
   ENABLE: True
   DATASET: kinetics
-  BATCH_SIZE: 64
+  BATCH_SIZE: 4
   # CHECKPOINT_FILE_PATH: 'x3d_s.pyth' # 73.50% top1 30-view accuracy to download from the model zoo (optional).
   # NUM_SPATIAL_CROPS: 1
   NUM_SPATIAL_CROPS: 3
@@ -27,6 +27,8 @@ DATA:
   TEST_CROP_SIZE: 182 # use if TEST.NUM_SPATIAL_CROPS: 3
   INPUT_CHANNEL_NUM: [3]
   DECODING_BACKEND: torchvision
+  PATH_TO_DATA_DIR: /cluster/work/cvl/robocup/data
+  PATH_LABEL_SEPERATOR: ';'
 RESNET:
   ZERO_INIT_FINAL_BN: True
   TRANS_FUNC: x3d_transform
@@ -45,7 +47,7 @@ SOLVER:
   WARMUP_START_LR: 0.01
   OPTIMIZING_METHOD: sgd
 MODEL:
-  NUM_CLASSES: 400
+  NUM_CLASSES: 13
   ARCH: x3d
   MODEL_NAME: X3D
   LOSS_FUNC: cross_entropy
@@ -53,6 +55,6 @@ MODEL:
 DATA_LOADER:
   NUM_WORKERS: 8
   PIN_MEMORY: True
-NUM_GPUS: 8
+NUM_GPUS: 0
 RNG_SEED: 0
 OUTPUT_DIR: .

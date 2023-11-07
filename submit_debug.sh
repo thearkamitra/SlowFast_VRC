@@ -10,10 +10,9 @@
 #SBATCH --mail-user=amitra@ethz.ch
 
 source /cluster/apps/local/env2lmod.sh  # Switch to the new software stack
-module load gcc/8.2.0 python/3.10.4 cuda/11.6.2 eth_proxy     # Load modules
-cd /cluster/project/infk/cvg/students/amitra/thesis            # Change directory
-export PYTHONPATH=.   
+cd /cluster/project/cvl/amitra/SlowFast_VRC            # Change directory
 echo "Starting to activate virtual environment"
-source ~/thesis/bin/activate               
+source /cluster/project/cvl/amitra/SlowFast_VRC/venv/bin/activate # Activate virtual environment               
+export PYTHONPATH=.   
 echo "Activated virtual environment"
-python scripts/new_pipeline.py general.verbose=True general.wandb=True general.debug=True "$@" # Execute the program
+python tools/run_net.py --cfg configs/VRC/X3D_S.yaml # Execute the program

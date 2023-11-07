@@ -250,10 +250,9 @@ class Kinetics(torch.utils.data.Dataset):
         
         #transform data dimension from (frames, height, width, channels) to (channels, frames, height, width)
         data = np.transpose(data, (3, 0, 1, 2))
-        
-        slow_data = self.get_slow_data(data)   
-        frames = [slow_data, data]
-        return data, label, index, 0, {}
+        frames = utils.pack_pathway_output(self.cfg, data)
+        # frames = [slow_data, data]
+        return frames, label, index, 0, {}
         # How the return should look like:
         return frames, label, index, time_idx, {}
 

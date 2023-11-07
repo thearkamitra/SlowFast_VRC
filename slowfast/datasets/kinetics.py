@@ -71,8 +71,8 @@ class Kinetics(torch.utils.data.Dataset):
 
         ## to set
         
-        self.IMAGE_HEIGHT= 90
-        self.IMAGE_WIDTH= 120
+        self.IMAGE_HEIGHT= 90*3
+        self.IMAGE_WIDTH= 120*3
         self.NUM_FRAMES= 15
         self.CHANNELS= 3
         self.normalize = True

@@ -1,0 +1,13 @@
+/var/spool/slurm/slurmd/state/job34937011/slurm_script: line 15: /cluster/project/cvl/amitra/SlowFast_VRC/venv/bin/activate: No such file or directory
+/cluster/apps/nss/gcc-8.2.0/python/3.10.4/x86_64/lib64/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: /cluster/apps/nss/gcc-8.2.0/python/3.10.4/x86_64/lib64/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN2at4_ops19empty_memory_format4callEN3c108ArrayRefIlEENS2_8optionalINS2_10ScalarTypeEEENS5_INS2_6LayoutEEENS5_INS2_6DeviceEEENS5_IbEENS5_INS2_12MemoryFormatEEE
+  warn(f"Failed to load image Python extension: {e}")
+Traceback (most recent call last):
+  File "/cluster/project/cvl/amitra/SlowFast_VRC/tools/run_net.py", line 6, in <module>
+    from slowfast.utils.misc import launch_job
+  File "/cluster/project/cvl/amitra/SlowFast_VRC/slowfast/utils/misc.py", line 19, in <module>
+    import slowfast.utils.logging as logging
+  File "/cluster/project/cvl/amitra/SlowFast_VRC/slowfast/utils/logging.py", line 15, in <module>
+    import slowfast.utils.distributed as du
+  File "/cluster/project/cvl/amitra/SlowFast_VRC/slowfast/utils/distributed.py", line 12, in <module>
+    from pytorchvideo.layers.distributed import (  # noqa
+ImportError: cannot import name 'cat_all_gather' from 'pytorchvideo.layers.distributed' (/cluster/home/amitra/.local/lib/python3.10/site-packages/pytorchvideo/layers/distributed.py)

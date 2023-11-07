@@ -1,0 +1,796 @@
+Current modulesystem is already LMOD modules, nothing to change for env2lmod
+Starting to activate virtual environment
+Activated virtual environment
+config files: ['configs/VRC/X3D_S.yaml']
+[11/07 13:08:10][INFO] train_net.py:  540: Train with config:
+[11/07 13:08:10][INFO] train_net.py:  541: CfgNode({'CONTRASTIVE': CfgNode({'T': 0.07, 'DIM': 128, 'LENGTH': 239975, 'QUEUE_LEN': 65536, 'MOMENTUM': 0.5, 'MOMENTUM_ANNEALING': False, 'TYPE': 'mem', 'INTERP_MEMORY': False, 'MEM_TYPE': '1d', 'NUM_CLASSES_DOWNSTREAM': 400, 'NUM_MLP_LAYERS': 1, 'MLP_DIM': 2048, 'BN_MLP': False, 'BN_SYNC_MLP': False, 'LOCAL_SHUFFLE_BN': True, 'MOCO_MULTI_VIEW_QUEUE': False, 'DELTA_CLIPS_MIN': -inf, 'DELTA_CLIPS_MAX': inf, 'PREDICTOR_DEPTHS': [], 'SEQUENTIAL': False, 'SIMCLR_DIST_ON': True, 'SWAV_QEUE_LEN': 0, 'KNN_ON': True}), 'BN': CfgNode({'USE_PRECISE_STATS': True, 'NUM_BATCHES_PRECISE': 200, 'WEIGHT_DECAY': 0.0, 'NORM_TYPE': 'batchnorm', 'NUM_SPLITS': 1, 'NUM_SYNC_DEVICES': 1, 'GLOBAL_SYNC': False}), 'TRAIN': CfgNode({'ENABLE': True, 'KILL_LOSS_EXPLOSION_FACTOR': 0.0, 'DATASET': 'kinetics', 'BATCH_SIZE': 4, 'EVAL_PERIOD': 10, 'CHECKPOINT_PERIOD': 10, 'AUTO_RESUME': True, 'CHECKPOINT_FILE_PATH': '', 'CHECKPOINT_TYPE': 'pytorch', 'CHECKPOINT_INFLATE': False, 'CHECKPOINT_EPOCH_RESET': False, 'CHECKPOINT_CLEAR_NAME_PATTERN': (), 'MIXED_PRECISION': False, 'CHECKPOINT_IN_INIT': False}), 'AUG': CfgNode({'ENABLE': False, 'NUM_SAMPLE': 1, 'COLOR_JITTER': 0.4, 'AA_TYPE': 'rand-m9-mstd0.5-inc1', 'INTERPOLATION': 'bicubic', 'RE_PROB': 0.25, 'RE_MODE': 'pixel', 'RE_COUNT': 1, 'RE_SPLIT': False, 'GEN_MASK_LOADER': False, 'MASK_TUBE': False, 'MASK_FRAMES': False, 'MASK_WINDOW_SIZE': [8, 7, 7], 'MASK_RATIO': 0.0, 'MAX_MASK_PATCHES_PER_BLOCK': None}), 'VIS_MASK': CfgNode({'ENABLE': False}), 'MIXUP': CfgNode({'ENABLE': False, 'ALPHA': 0.8, 'CUTMIX_ALPHA': 1.0, 'PROB': 1.0, 'SWITCH_PROB': 0.5, 'LABEL_SMOOTH_VALUE': 0.1}), 'TEST': CfgNode({'ENABLE': True, 'DATASET': 'kinetics', 'BATCH_SIZE': 4, 'CHECKPOINT_FILE_PATH': '', 'NUM_ENSEMBLE_VIEWS': 10, 'NUM_SPATIAL_CROPS': 3, 'CHECKPOINT_TYPE': 'pytorch', 'SAVE_RESULTS_PATH': '', 'NUM_TEMPORAL_CLIPS': []}), 'RESNET': CfgNode({'TRANS_FUNC': 'x3d_transform', 'NUM_GROUPS': 1, 'WIDTH_PER_GROUP': 64, 'INPLACE_RELU': True, 'STRIDE_1X1': False, 'ZERO_INIT_FINAL_BN': True, 'ZERO_INIT_FINAL_CONV': False, 'DEPTH': 50, 'NUM_BLOCK_TEMP_KERNEL': [[3], [4], [6], [3]], 'SPATIAL_STRIDES': [[1], [2], [2], [2]], 'SPATIAL_DILATIONS': [[1], [1], [1], [1]]}), 'X3D': CfgNode({'WIDTH_FACTOR': 2.0, 'DEPTH_FACTOR': 2.2, 'BOTTLENECK_FACTOR': 2.25, 'DIM_C5': 2048, 'DIM_C1': 12, 'SCALE_RES2': False, 'BN_LIN5': False, 'CHANNELWISE_3x3x3': True}), 'NONLOCAL': CfgNode({'LOCATION': [[[]], [[]], [[]], [[]]], 'GROUP': [[1], [1], [1], [1]], 'INSTANTIATION': 'dot_product', 'POOL': [[[1, 2, 2], [1, 2, 2]], [[1, 2, 2], [1, 2, 2]], [[1, 2, 2], [1, 2, 2]], [[1, 2, 2], [1, 2, 2]]]}), 'MODEL': CfgNode({'ARCH': 'x3d', 'MODEL_NAME': 'X3D', 'NUM_CLASSES': 13, 'LOSS_FUNC': 'cross_entropy', 'SINGLE_PATHWAY_ARCH': ['2d', 'c2d', 'i3d', 'slow', 'x3d', 'mvit', 'maskmvit'], 'MULTI_PATHWAY_ARCH': ['slowfast'], 'DROPOUT_RATE': 0.5, 'DROPCONNECT_RATE': 0.0, 'FC_INIT_STD': 0.01, 'HEAD_ACT': 'softmax', 'ACT_CHECKPOINT': False, 'DETACH_FINAL_FC': False, 'FROZEN_BN': False, 'FP16_ALLREDUCE': False}), 'MVIT': CfgNode({'MODE': 'conv', 'POOL_FIRST': False, 'CLS_EMBED_ON': True, 'PATCH_KERNEL': [3, 7, 7], 'PATCH_STRIDE': [2, 4, 4], 'PATCH_PADDING': [2, 4, 4], 'PATCH_2D': False, 'EMBED_DIM': 96, 'NUM_HEADS': 1, 'MLP_RATIO': 4.0, 'QKV_BIAS': True, 'DROPPATH_RATE': 0.1, 'LAYER_SCALE_INIT_VALUE': 0.0, 'DEPTH': 16, 'NORM': 'layernorm', 'DIM_MUL': [], 'HEAD_MUL': [], 'POOL_KV_STRIDE': [], 'POOL_KV_STRIDE_ADAPTIVE': None, 'POOL_Q_STRIDE': [], 'POOL_KVQ_KERNEL': None, 'ZERO_DECAY_POS_CLS': True, 'NORM_STEM': False, 'SEP_POS_EMBED': False, 'DROPOUT_RATE': 0.0, 'USE_ABS_POS': True, 'REL_POS_SPATIAL': False, 'REL_POS_TEMPORAL': False, 'REL_POS_ZERO_INIT': False, 'RESIDUAL_POOLING': False, 'DIM_MUL_IN_ATT': False, 'SEPARATE_QKV': False, 'HEAD_INIT_SCALE': 1.0, 'USE_MEAN_POOLING': False, 'USE_FIXED_SINCOS_POS': False, 'REV': CfgNode({'ENABLE': False, 'RESPATH_FUSE': 'concat', 'BUFFER_LAYERS': [], 'RES_PATH': 'conv', 'PRE_Q_FUSION': 'avg'})}), 'MASK': CfgNode({'ENABLE': False, 'MAE_ON': False, 'MAE_RND_MASK': False, 'PER_FRAME_MASKING': False, 'TIME_STRIDE_LOSS': True, 'NORM_PRED_PIXEL': True, 'SCALE_INIT_BY_DEPTH': False, 'DECODER_EMBED_DIM': 512, 'DECODER_SEP_POS_EMBED': False, 'DEC_KV_KERNEL': [], 'DEC_KV_STRIDE': [], 'PRETRAIN_DEPTH': [15], 'HEAD_TYPE': 'separate', 'DECODER_DEPTH': 0, 'PRED_HOG': False}), 'SLOWFAST': CfgNode({'BETA_INV': 8, 'ALPHA': 8, 'FUSION_CONV_CHANNEL_RATIO': 2, 'FUSION_KERNEL_SZ': 5}), 'DATA': CfgNode({'PATH_TO_DATA_DIR': '/cluster/work/cvl/robocup/data/Debug_Dataset', 'PATH_LABEL_SEPARATOR': ';', 'PATH_PREFIX': '', 'NUM_FRAMES': 15, 'SAMPLING_RATE': 6, 'TRAIN_PCA_EIGVAL': [0.225, 0.224, 0.229], 'TRAIN_PCA_EIGVEC': [[-0.5675, 0.7192, 0.4009], [-0.5808, -0.0045, -0.814], [-0.5836, -0.6948, 0.4203]], 'PATH_TO_PRELOAD_IMDB': '', 'MEAN': [0.45, 0.45, 0.45], 'INPUT_CHANNEL_NUM': [3], 'STD': [0.225, 0.225, 0.225], 'TRAIN_JITTER_SCALES': [182, 228], 'TRAIN_JITTER_SCALES_RELATIVE': [], 'TRAIN_JITTER_ASPECT_RELATIVE': [], 'USE_OFFSET_SAMPLING': False, 'TRAIN_JITTER_MOTION_SHIFT': False, 'TRAIN_CROP_SIZE': 160, 'TEST_CROP_SIZE': 182, 'TARGET_FPS': 30, 'TRAIN_JITTER_FPS': 0.0, 'DECODING_BACKEND': 'torchvision', 'DECODING_SHORT_SIZE': 256, 'INV_UNIFORM_SAMPLE': False, 'RANDOM_FLIP': True, 'MULTI_LABEL': False, 'ENSEMBLE_METHOD': 'sum', 'REVERSE_INPUT_CHANNEL': False, 'TRAIN_CROP_NUM_TEMPORAL': 1, 'TRAIN_CROP_NUM_SPATIAL': 1, 'COLOR_RND_GRAYSCALE': 0.0, 'LOADER_CHUNK_SIZE': 0, 'LOADER_CHUNK_OVERALL_SIZE': 0, 'SKIP_ROWS': 0, 'TIME_DIFF_PROB': 0.0, 'SSL_COLOR_JITTER': False, 'SSL_COLOR_BRI_CON_SAT': [0.4, 0.4, 0.4], 'SSL_COLOR_HUE': 0.1, 'SSL_MOCOV2_AUG': False, 'SSL_BLUR_SIGMA_MIN': [0.0, 0.1], 'SSL_BLUR_SIGMA_MAX': [0.0, 2.0], 'IN22K_TRAINVAL': False, 'IN22k_VAL_IN1K': '', 'IN_VAL_CROP_RATIO': 0.875, 'DUMMY_LOAD': False}), 'SOLVER': CfgNode({'BASE_LR': 0.1, 'LR_POLICY': 'cosine', 'COSINE_END_LR': 0.0, 'GAMMA': 0.1, 'STEP_SIZE': 1, 'STEPS': [], 'LRS': [], 'MAX_EPOCH': 300, 'MOMENTUM': 0.9, 'DAMPENING': 0.0, 'NESTEROV': True, 'WEIGHT_DECAY': 5e-05, 'WARMUP_FACTOR': 0.1, 'WARMUP_EPOCHS': 35.0, 'WARMUP_START_LR': 0.01, 'OPTIMIZING_METHOD': 'sgd', 'BASE_LR_SCALE_NUM_SHARDS': True, 'COSINE_AFTER_WARMUP': False, 'ZERO_WD_1D_PARAM': False, 'CLIP_GRAD_VAL': None, 'CLIP_GRAD_L2NORM': None, 'LARS_ON': False, 'LAYER_DECAY': 1.0, 'BETAS': (0.9, 0.999)}), 'TASK': '', 'NUM_GPUS': 1, 'NUM_SHARDS': 1, 'SHARD_ID': 0, 'OUTPUT_DIR': '.', 'RNG_SEED': 0, 'LOG_PERIOD': 10, 'LOG_MODEL_INFO': True, 'DIST_BACKEND': 'nccl', 'BENCHMARK': CfgNode({'NUM_EPOCHS': 5, 'LOG_PERIOD': 100, 'SHUFFLE': True}), 'DATA_LOADER': CfgNode({'NUM_WORKERS': 8, 'PIN_MEMORY': True, 'ENABLE_MULTI_THREAD_DECODE': False}), 'DETECTION': CfgNode({'ENABLE': False, 'ALIGNED': True, 'SPATIAL_SCALE_FACTOR': 16, 'ROI_XFORM_RESOLUTION': 7}), 'AVA': CfgNode({'FRAME_DIR': '/mnt/fair-flash3-east/ava_trainval_frames.img/', 'FRAME_LIST_DIR': '/mnt/vol/gfsai-flash3-east/ai-group/users/haoqifan/ava/frame_list/', 'ANNOTATION_DIR': '/mnt/vol/gfsai-flash3-east/ai-group/users/haoqifan/ava/frame_list/', 'TRAIN_LISTS': ['train.csv'], 'TEST_LISTS': ['val.csv'], 'TRAIN_GT_BOX_LISTS': ['ava_train_v2.2.csv'], 'TRAIN_PREDICT_BOX_LISTS': [], 'TEST_PREDICT_BOX_LISTS': ['ava_val_predicted_boxes.csv'], 'DETECTION_SCORE_THRESH': 0.9, 'BGR': False, 'TRAIN_USE_COLOR_AUGMENTATION': False, 'TRAIN_PCA_JITTER_ONLY': True, 'TEST_FORCE_FLIP': False, 'FULL_TEST_ON_VAL': False, 'LABEL_MAP_FILE': 'ava_action_list_v2.2_for_activitynet_2019.pbtxt', 'EXCLUSION_FILE': 'ava_val_excluded_timestamps_v2.2.csv', 'GROUNDTRUTH_FILE': 'ava_val_v2.2.csv', 'IMG_PROC_BACKEND': 'cv2'}), 'MULTIGRID': CfgNode({'EPOCH_FACTOR': 1.5, 'SHORT_CYCLE': False, 'SHORT_CYCLE_FACTORS': [0.5, 0.7071067811865476], 'LONG_CYCLE': False, 'LONG_CYCLE_FACTORS': [(0.25, 0.7071067811865476), (0.5, 0.7071067811865476), (0.5, 1), (1, 1)], 'BN_BASE_SIZE': 8, 'EVAL_FREQ': 3, 'LONG_CYCLE_SAMPLING_RATE': 0, 'DEFAULT_B': 0, 'DEFAULT_T': 0, 'DEFAULT_S': 0}), 'TENSORBOARD': CfgNode({'ENABLE': False, 'PREDICTIONS_PATH': '', 'LOG_DIR': '', 'CLASS_NAMES_PATH': '', 'CATEGORIES_PATH': '', 'CONFUSION_MATRIX': CfgNode({'ENABLE': False, 'FIGSIZE': [8, 8], 'SUBSET_PATH': ''}), 'HISTOGRAM': CfgNode({'ENABLE': False, 'SUBSET_PATH': '', 'TOPK': 10, 'FIGSIZE': [8, 8]}), 'MODEL_VIS': CfgNode({'ENABLE': False, 'MODEL_WEIGHTS': False, 'ACTIVATIONS': False, 'INPUT_VIDEO': False, 'LAYER_LIST': [], 'TOPK_PREDS': 1, 'COLORMAP': 'Pastel2', 'GRAD_CAM': CfgNode({'ENABLE': True, 'LAYER_LIST': [], 'USE_TRUE_LABEL': False, 'COLORMAP': 'viridis'})}), 'WRONG_PRED_VIS': CfgNode({'ENABLE': False, 'TAG': 'Incorrectly classified videos.', 'SUBSET_PATH': ''})}), 'DEMO': CfgNode({'ENABLE': False, 'LABEL_FILE_PATH': '', 'WEBCAM': -1, 'INPUT_VIDEO': '', 'DISPLAY_WIDTH': 0, 'DISPLAY_HEIGHT': 0, 'DETECTRON2_CFG': 'COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml', 'DETECTRON2_WEIGHTS': 'detectron2://COCO-Detection/faster_rcnn_R_50_FPN_3x/137849458/model_final_280758.pkl', 'DETECTRON2_THRESH': 0.9, 'BUFFER_SIZE': 0, 'OUTPUT_FILE': '', 'OUTPUT_FPS': -1, 'INPUT_FORMAT': 'BGR', 'CLIP_VIS_SIZE': 10, 'NUM_VIS_INSTANCES': 2, 'PREDS_BOXES': '', 'THREAD_ENABLE': False, 'NUM_CLIPS_SKIP': 0, 'GT_BOXES': '', 'STARTING_SECOND': 900, 'FPS': 30, 'VIS_MODE': 'thres', 'COMMON_CLASS_THRES': 0.7, 'UNCOMMON_CLASS_THRES': 0.3, 'COMMON_CLASS_NAMES': ['watch (a person)', 'talk to (e.g., self, a person, a group)', 'listen to (a person)', 'touch (an object)', 'carry/hold (an object)', 'walk', 'sit', 'lie/sleep', 'bend/bow (at the waist)'], 'SLOWMO': 1})})
+[11/07 13:08:12][INFO] misc.py:  185: Model:
+X3D(
+  (s1): VideoModelStem(
+    (pathway0_stem): X3DStem(
+      (conv_xy): Conv3d(3, 24, kernel_size=(1, 3, 3), stride=(1, 2, 2), padding=(0, 1, 1), bias=False)
+      (conv): Conv3d(24, 24, kernel_size=(5, 1, 1), stride=(1, 1, 1), padding=(2, 0, 0), groups=24, bias=False)
+      (bn): BatchNorm3d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+  )
+  (s2): ResStage(
+    (pathway0_res0): ResBlock(
+      (branch1): Conv3d(24, 24, kernel_size=(1, 1, 1), stride=(1, 2, 2), bias=False)
+      (branch1_bn): BatchNorm3d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (branch2): X3DTransform(
+        (a): Conv3d(24, 54, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(54, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(54, 54, kernel_size=(3, 3, 3), stride=(1, 2, 2), padding=(1, 1, 1), groups=54, bias=False)
+        (b_bn): BatchNorm3d(54, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (se): SE(
+          (avg_pool): AdaptiveAvgPool3d(output_size=(1, 1, 1))
+          (fc1): Conv3d(54, 8, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc1_act): ReLU()
+          (fc2): Conv3d(8, 54, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc2_sig): Sigmoid()
+        )
+        (b_relu): Swish()
+        (c): Conv3d(54, 24, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res1): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(24, 54, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(54, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(54, 54, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=54, bias=False)
+        (b_bn): BatchNorm3d(54, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (b_relu): Swish()
+        (c): Conv3d(54, 24, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res2): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(24, 54, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(54, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(54, 54, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=54, bias=False)
+        (b_bn): BatchNorm3d(54, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (se): SE(
+          (avg_pool): AdaptiveAvgPool3d(output_size=(1, 1, 1))
+          (fc1): Conv3d(54, 8, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc1_act): ReLU()
+          (fc2): Conv3d(8, 54, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc2_sig): Sigmoid()
+        )
+        (b_relu): Swish()
+        (c): Conv3d(54, 24, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+  )
+  (s3): ResStage(
+    (pathway0_res0): ResBlock(
+      (branch1): Conv3d(24, 48, kernel_size=(1, 1, 1), stride=(1, 2, 2), bias=False)
+      (branch1_bn): BatchNorm3d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (branch2): X3DTransform(
+        (a): Conv3d(24, 108, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(108, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(108, 108, kernel_size=(3, 3, 3), stride=(1, 2, 2), padding=(1, 1, 1), groups=108, bias=False)
+        (b_bn): BatchNorm3d(108, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (se): SE(
+          (avg_pool): AdaptiveAvgPool3d(output_size=(1, 1, 1))
+          (fc1): Conv3d(108, 8, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc1_act): ReLU()
+          (fc2): Conv3d(8, 108, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc2_sig): Sigmoid()
+        )
+        (b_relu): Swish()
+        (c): Conv3d(108, 48, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res1): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(48, 108, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(108, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(108, 108, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=108, bias=False)
+        (b_bn): BatchNorm3d(108, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (b_relu): Swish()
+        (c): Conv3d(108, 48, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res2): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(48, 108, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(108, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(108, 108, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=108, bias=False)
+        (b_bn): BatchNorm3d(108, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (se): SE(
+          (avg_pool): AdaptiveAvgPool3d(output_size=(1, 1, 1))
+          (fc1): Conv3d(108, 8, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc1_act): ReLU()
+          (fc2): Conv3d(8, 108, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc2_sig): Sigmoid()
+        )
+        (b_relu): Swish()
+        (c): Conv3d(108, 48, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res3): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(48, 108, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(108, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(108, 108, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=108, bias=False)
+        (b_bn): BatchNorm3d(108, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (b_relu): Swish()
+        (c): Conv3d(108, 48, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res4): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(48, 108, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(108, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(108, 108, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=108, bias=False)
+        (b_bn): BatchNorm3d(108, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (se): SE(
+          (avg_pool): AdaptiveAvgPool3d(output_size=(1, 1, 1))
+          (fc1): Conv3d(108, 8, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc1_act): ReLU()
+          (fc2): Conv3d(8, 108, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc2_sig): Sigmoid()
+        )
+        (b_relu): Swish()
+        (c): Conv3d(108, 48, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+  )
+  (s4): ResStage(
+    (pathway0_res0): ResBlock(
+      (branch1): Conv3d(48, 96, kernel_size=(1, 1, 1), stride=(1, 2, 2), bias=False)
+      (branch1_bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (branch2): X3DTransform(
+        (a): Conv3d(48, 216, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(216, 216, kernel_size=(3, 3, 3), stride=(1, 2, 2), padding=(1, 1, 1), groups=216, bias=False)
+        (b_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (se): SE(
+          (avg_pool): AdaptiveAvgPool3d(output_size=(1, 1, 1))
+          (fc1): Conv3d(216, 16, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc1_act): ReLU()
+          (fc2): Conv3d(16, 216, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc2_sig): Sigmoid()
+        )
+        (b_relu): Swish()
+        (c): Conv3d(216, 96, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res1): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(96, 216, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(216, 216, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=216, bias=False)
+        (b_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (b_relu): Swish()
+        (c): Conv3d(216, 96, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res2): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(96, 216, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(216, 216, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=216, bias=False)
+        (b_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (se): SE(
+          (avg_pool): AdaptiveAvgPool3d(output_size=(1, 1, 1))
+          (fc1): Conv3d(216, 16, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc1_act): ReLU()
+          (fc2): Conv3d(16, 216, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc2_sig): Sigmoid()
+        )
+        (b_relu): Swish()
+        (c): Conv3d(216, 96, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res3): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(96, 216, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(216, 216, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=216, bias=False)
+        (b_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (b_relu): Swish()
+        (c): Conv3d(216, 96, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res4): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(96, 216, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(216, 216, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=216, bias=False)
+        (b_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (se): SE(
+          (avg_pool): AdaptiveAvgPool3d(output_size=(1, 1, 1))
+          (fc1): Conv3d(216, 16, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc1_act): ReLU()
+          (fc2): Conv3d(16, 216, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc2_sig): Sigmoid()
+        )
+        (b_relu): Swish()
+        (c): Conv3d(216, 96, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res5): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(96, 216, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(216, 216, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=216, bias=False)
+        (b_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (b_relu): Swish()
+        (c): Conv3d(216, 96, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res6): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(96, 216, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(216, 216, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=216, bias=False)
+        (b_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (se): SE(
+          (avg_pool): AdaptiveAvgPool3d(output_size=(1, 1, 1))
+          (fc1): Conv3d(216, 16, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc1_act): ReLU()
+          (fc2): Conv3d(16, 216, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc2_sig): Sigmoid()
+        )
+        (b_relu): Swish()
+        (c): Conv3d(216, 96, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res7): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(96, 216, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(216, 216, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=216, bias=False)
+        (b_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (b_relu): Swish()
+        (c): Conv3d(216, 96, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res8): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(96, 216, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(216, 216, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=216, bias=False)
+        (b_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (se): SE(
+          (avg_pool): AdaptiveAvgPool3d(output_size=(1, 1, 1))
+          (fc1): Conv3d(216, 16, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc1_act): ReLU()
+          (fc2): Conv3d(16, 216, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc2_sig): Sigmoid()
+        )
+        (b_relu): Swish()
+        (c): Conv3d(216, 96, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res9): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(96, 216, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(216, 216, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=216, bias=False)
+        (b_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (b_relu): Swish()
+        (c): Conv3d(216, 96, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res10): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(96, 216, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(216, 216, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=216, bias=False)
+        (b_bn): BatchNorm3d(216, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (se): SE(
+          (avg_pool): AdaptiveAvgPool3d(output_size=(1, 1, 1))
+          (fc1): Conv3d(216, 16, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc1_act): ReLU()
+          (fc2): Conv3d(16, 216, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc2_sig): Sigmoid()
+        )
+        (b_relu): Swish()
+        (c): Conv3d(216, 96, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+  )
+  (s5): ResStage(
+    (pathway0_res0): ResBlock(
+      (branch1): Conv3d(96, 192, kernel_size=(1, 1, 1), stride=(1, 2, 2), bias=False)
+      (branch1_bn): BatchNorm3d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (branch2): X3DTransform(
+        (a): Conv3d(96, 432, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(432, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(432, 432, kernel_size=(3, 3, 3), stride=(1, 2, 2), padding=(1, 1, 1), groups=432, bias=False)
+        (b_bn): BatchNorm3d(432, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (se): SE(
+          (avg_pool): AdaptiveAvgPool3d(output_size=(1, 1, 1))
+          (fc1): Conv3d(432, 32, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc1_act): ReLU()
+          (fc2): Conv3d(32, 432, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc2_sig): Sigmoid()
+        )
+        (b_relu): Swish()
+        (c): Conv3d(432, 192, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res1): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(192, 432, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(432, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(432, 432, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=432, bias=False)
+        (b_bn): BatchNorm3d(432, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (b_relu): Swish()
+        (c): Conv3d(432, 192, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res2): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(192, 432, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(432, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(432, 432, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=432, bias=False)
+        (b_bn): BatchNorm3d(432, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (se): SE(
+          (avg_pool): AdaptiveAvgPool3d(output_size=(1, 1, 1))
+          (fc1): Conv3d(432, 32, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc1_act): ReLU()
+          (fc2): Conv3d(32, 432, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc2_sig): Sigmoid()
+        )
+        (b_relu): Swish()
+        (c): Conv3d(432, 192, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res3): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(192, 432, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(432, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(432, 432, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=432, bias=False)
+        (b_bn): BatchNorm3d(432, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (b_relu): Swish()
+        (c): Conv3d(432, 192, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res4): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(192, 432, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(432, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(432, 432, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=432, bias=False)
+        (b_bn): BatchNorm3d(432, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (se): SE(
+          (avg_pool): AdaptiveAvgPool3d(output_size=(1, 1, 1))
+          (fc1): Conv3d(432, 32, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc1_act): ReLU()
+          (fc2): Conv3d(32, 432, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc2_sig): Sigmoid()
+        )
+        (b_relu): Swish()
+        (c): Conv3d(432, 192, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res5): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(192, 432, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(432, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(432, 432, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=432, bias=False)
+        (b_bn): BatchNorm3d(432, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (b_relu): Swish()
+        (c): Conv3d(432, 192, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+    (pathway0_res6): ResBlock(
+      (branch2): X3DTransform(
+        (a): Conv3d(192, 432, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (a_bn): BatchNorm3d(432, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (a_relu): ReLU(inplace=True)
+        (b): Conv3d(432, 432, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), groups=432, bias=False)
+        (b_bn): BatchNorm3d(432, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (se): SE(
+          (avg_pool): AdaptiveAvgPool3d(output_size=(1, 1, 1))
+          (fc1): Conv3d(432, 32, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc1_act): ReLU()
+          (fc2): Conv3d(32, 432, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (fc2_sig): Sigmoid()
+        )
+        (b_relu): Swish()
+        (c): Conv3d(432, 192, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (c_bn): BatchNorm3d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (relu): ReLU(inplace=True)
+    )
+  )
+  (head): X3DHead(
+    (conv_5): Conv3d(192, 432, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+    (conv_5_bn): BatchNorm3d(432, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (conv_5_relu): ReLU(inplace=True)
+    (avg_pool): AvgPool3d(kernel_size=[15, 5, 5], stride=1, padding=0)
+    (lin_5): Conv3d(432, 2048, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+    (lin_5_relu): ReLU(inplace=True)
+    (dropout): Dropout(p=0.5, inplace=False)
+    (projection): Linear(in_features=2048, out_features=13, bias=True)
+    (act): Softmax(dim=4)
+  )
+)
+[11/07 13:08:12][INFO] misc.py:  187: Params: 3,001,359
+[11/07 13:08:12][INFO] misc.py:  188: Mem: 0.011430740356445312 MB
+[11/07 13:08:15][WARNING] jit_analysis.py:  499: Unsupported operator aten::adaptive_avg_pool3d encountered 15 time(s)
+[11/07 13:08:15][WARNING] jit_analysis.py:  499: Unsupported operator aten::sigmoid encountered 15 time(s)
+[11/07 13:08:15][WARNING] jit_analysis.py:  499: Unsupported operator aten::mul encountered 15 time(s)
+[11/07 13:08:15][WARNING] jit_analysis.py:  499: Unsupported operator prim::PythonOp.SwishFunction encountered 26 time(s)
+[11/07 13:08:15][WARNING] jit_analysis.py:  499: Unsupported operator aten::add encountered 26 time(s)
+[11/07 13:08:15][WARNING] jit_analysis.py:  499: Unsupported operator aten::avg_pool3d encountered 1 time(s)
+[11/07 13:08:15][WARNING] jit_analysis.py:  499: Unsupported operator aten::softmax encountered 1 time(s)
+[11/07 13:08:15][WARNING] jit_analysis.py:  499: Unsupported operator aten::mean encountered 1 time(s)
+[11/07 13:08:15][INFO] misc.py:  190: Flops: 2.3432843360000004 G
+[11/07 13:08:15][WARNING] jit_analysis.py:  499: Unsupported operator aten::batch_norm encountered 84 time(s)
+[11/07 13:08:15][WARNING] jit_analysis.py:  499: Unsupported operator aten::adaptive_avg_pool3d encountered 15 time(s)
+[11/07 13:08:15][WARNING] jit_analysis.py:  499: Unsupported operator aten::sigmoid encountered 15 time(s)
+[11/07 13:08:15][WARNING] jit_analysis.py:  499: Unsupported operator aten::mul encountered 15 time(s)
+[11/07 13:08:15][WARNING] jit_analysis.py:  499: Unsupported operator prim::PythonOp.SwishFunction encountered 26 time(s)
+[11/07 13:08:15][WARNING] jit_analysis.py:  499: Unsupported operator aten::add encountered 26 time(s)
+[11/07 13:08:15][WARNING] jit_analysis.py:  499: Unsupported operator aten::avg_pool3d encountered 1 time(s)
+[11/07 13:08:15][WARNING] jit_analysis.py:  499: Unsupported operator aten::softmax encountered 1 time(s)
+[11/07 13:08:15][WARNING] jit_analysis.py:  499: Unsupported operator aten::mean encountered 1 time(s)
+[11/07 13:08:15][INFO] misc.py:  191: Activations: 42.053781 M
+[11/07 13:08:15][INFO] misc.py:  196: nvidia-smi
+Tue Nov  7 13:08:15 2023       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 525.125.06   Driver Version: 525.125.06   CUDA Version: 12.0     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  Quadro RTX 6000     On   | 00000000:C1:00.0 Off |                  Off |
+| 33%   34C    P2    56W / 260W |   1515MiB / 24576MiB |      2%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|    0   N/A  N/A     89828      C   python                           1512MiB |
++-----------------------------------------------------------------------------+
+bn 168, non bn 148, zero 0, no grad 0
+[11/07 13:08:15][INFO] train_net.py:  556: Load from last checkpoint.
+[11/07 13:08:15][INFO] checkpoint.py:  222: Loading network weights from ./checkpoints/checkpoint_epoch_00010.pyth.
+missing keys: []
+unexpected keys: []
+[11/07 13:08:16][INFO] kinetics.py:  106: Constructing VRC train...
+[11/07 13:08:16][INFO] kinetics.py:  162: Constructing VRC dataloader (size: 24 skip_rows 0) from /cluster/work/cvl/robocup/data/Debug_Dataset/small_train.csv 
+[11/07 13:08:16][INFO] kinetics.py:  106: Constructing VRC val...
+[11/07 13:08:16][INFO] kinetics.py:  162: Constructing VRC dataloader (size: 23 skip_rows 0) from /cluster/work/cvl/robocup/data/Debug_Dataset/small_val.csv 
+[11/07 13:08:16][INFO] kinetics.py:  106: Constructing VRC train...
+[11/07 13:08:16][INFO] kinetics.py:  162: Constructing VRC dataloader (size: 24 skip_rows 0) from /cluster/work/cvl/robocup/data/Debug_Dataset/small_train.csv 
+[11/07 13:08:16][INFO] train_net.py:  635: Start epoch: 11
+[11/07 13:08:29][INFO] logging.py:   99: json_stats: {"RAM": "41.66/501.50G", "_type": "train_epoch", "dt": 0.50238, "dt_data": 0.50238, "dt_net": 0.24182, "epoch": "11/300", "eta": "0:14:31", "gpu_mem": "5.93G", "grad_norm": 7.17628, "loss": 4.19507, "lr": 0.03683, "top1_err": 70.83333, "top5_err": 33.33333}
+[11/07 13:08:29][INFO] train_net.py:  696: Epoch 10 takes 13.16s. Epochs from 10 to 10 take 13.16s in average and 13.16s in median.
+[11/07 13:08:29][INFO] train_net.py:  702: For epoch 10, each iteraction takes 2.19s in average. From epoch 10 to 10, each iteraction takes 2.19s in average.
+[11/07 13:08:33][INFO] logging.py:   99: json_stats: {"RAM": "41.66/501.50G", "_type": "train_epoch", "dt": 0.48572, "dt_data": 0.48572, "dt_net": 0.24226, "epoch": "12/300", "eta": "0:13:59", "gpu_mem": "5.93G", "grad_norm": 6.90232, "loss": 2.72070, "lr": 0.03931, "top1_err": 66.66667, "top5_err": 29.16667}
+[11/07 13:08:33][INFO] train_net.py:  696: Epoch 11 takes 4.10s. Epochs from 10 to 11 take 8.63s in average and 8.63s in median.
+[11/07 13:08:33][INFO] train_net.py:  702: For epoch 11, each iteraction takes 0.68s in average. From epoch 10 to 11, each iteraction takes 1.44s in average.
+[11/07 13:08:37][INFO] logging.py:   99: json_stats: {"RAM": "39.75/501.50G", "_type": "train_epoch", "dt": 0.50738, "dt_data": 0.50738, "dt_net": 0.24170, "epoch": "13/300", "eta": "0:14:33", "gpu_mem": "5.93G", "grad_norm": 6.85902, "loss": 3.62543, "lr": 0.04178, "top1_err": 66.66667, "top5_err": 41.66667}
+[11/07 13:08:37][INFO] train_net.py:  696: Epoch 12 takes 4.10s. Epochs from 10 to 12 take 7.12s in average and 4.10s in median.
+[11/07 13:08:37][INFO] train_net.py:  702: For epoch 12, each iteraction takes 0.68s in average. From epoch 10 to 12, each iteraction takes 1.19s in average.
+[11/07 13:08:41][INFO] logging.py:   99: json_stats: {"RAM": "41.63/501.50G", "_type": "train_epoch", "dt": 0.51557, "dt_data": 0.51557, "dt_net": 0.24257, "epoch": "14/300", "eta": "0:14:44", "gpu_mem": "5.93G", "grad_norm": 3.34955, "loss": 3.03947, "lr": 0.04426, "top1_err": 79.16667, "top5_err": 37.50000}
+[11/07 13:08:41][INFO] train_net.py:  696: Epoch 13 takes 4.14s. Epochs from 10 to 13 take 6.38s in average and 4.12s in median.
+[11/07 13:08:41][INFO] train_net.py:  702: For epoch 13, each iteraction takes 0.69s in average. From epoch 10 to 13, each iteraction takes 1.06s in average.
+[11/07 13:08:46][INFO] logging.py:   99: json_stats: {"RAM": "41.67/501.50G", "_type": "train_epoch", "dt": 0.51004, "dt_data": 0.51004, "dt_net": 0.24266, "epoch": "15/300", "eta": "0:14:32", "gpu_mem": "5.93G", "grad_norm": 4.53318, "loss": 2.96269, "lr": 0.04674, "top1_err": 75.00000, "top5_err": 41.66667}
+[11/07 13:08:46][INFO] train_net.py:  696: Epoch 14 takes 4.17s. Epochs from 10 to 14 take 5.93s in average and 4.14s in median.
+[11/07 13:08:46][INFO] train_net.py:  702: For epoch 14, each iteraction takes 0.69s in average. From epoch 10 to 14, each iteraction takes 0.99s in average.
+[11/07 13:08:50][INFO] logging.py:   99: json_stats: {"RAM": "41.68/501.50G", "_type": "train_epoch", "dt": 0.49298, "dt_data": 0.49298, "dt_net": 0.24210, "epoch": "16/300", "eta": "0:13:59", "gpu_mem": "5.93G", "grad_norm": 4.67242, "loss": 3.01499, "lr": 0.04921, "top1_err": 87.50000, "top5_err": 33.33333}
+[11/07 13:08:50][INFO] train_net.py:  696: Epoch 15 takes 4.04s. Epochs from 10 to 15 take 5.62s in average and 4.12s in median.
+[11/07 13:08:50][INFO] train_net.py:  702: For epoch 15, each iteraction takes 0.67s in average. From epoch 10 to 15, each iteraction takes 0.94s in average.
+[11/07 13:08:54][INFO] logging.py:   99: json_stats: {"RAM": "41.69/501.50G", "_type": "train_epoch", "dt": 0.47658, "dt_data": 0.47658, "dt_net": 0.24278, "epoch": "17/300", "eta": "0:13:29", "gpu_mem": "5.93G", "grad_norm": 2.82715, "loss": 3.12050, "lr": 0.05169, "top1_err": 75.00000, "top5_err": 37.50000}
+[11/07 13:08:54][INFO] train_net.py:  696: Epoch 16 takes 4.12s. Epochs from 10 to 16 take 5.40s in average and 4.12s in median.
+[11/07 13:08:54][INFO] train_net.py:  702: For epoch 16, each iteraction takes 0.69s in average. From epoch 10 to 16, each iteraction takes 0.90s in average.
+[11/07 13:08:58][INFO] logging.py:   99: json_stats: {"RAM": "41.67/501.50G", "_type": "train_epoch", "dt": 0.50083, "dt_data": 0.50083, "dt_net": 0.24237, "epoch": "18/300", "eta": "0:14:07", "gpu_mem": "5.93G", "grad_norm": 4.53830, "loss": 2.41877, "lr": 0.05417, "top1_err": 66.66667, "top5_err": 25.00000}
+[11/07 13:08:58][INFO] train_net.py:  696: Epoch 17 takes 4.04s. Epochs from 10 to 17 take 5.23s in average and 4.11s in median.
+[11/07 13:08:58][INFO] train_net.py:  702: For epoch 17, each iteraction takes 0.67s in average. From epoch 10 to 17, each iteraction takes 0.87s in average.
+[11/07 13:09:02][INFO] logging.py:   99: json_stats: {"RAM": "41.68/501.50G", "_type": "train_epoch", "dt": 0.50739, "dt_data": 0.50739, "dt_net": 0.24288, "epoch": "19/300", "eta": "0:14:15", "gpu_mem": "5.93G", "grad_norm": 2.97081, "loss": 2.09944, "lr": 0.05664, "top1_err": 62.50000, "top5_err": 16.66667}
+[11/07 13:09:02][INFO] train_net.py:  696: Epoch 18 takes 4.07s. Epochs from 10 to 18 take 5.10s in average and 4.10s in median.
+[11/07 13:09:02][INFO] train_net.py:  702: For epoch 18, each iteraction takes 0.68s in average. From epoch 10 to 18, each iteraction takes 0.85s in average.
+[11/07 13:09:06][INFO] logging.py:   99: json_stats: {"RAM": "41.68/501.50G", "_type": "train_epoch", "dt": 0.49748, "dt_data": 0.49748, "dt_net": 0.24280, "epoch": "20/300", "eta": "0:13:55", "gpu_mem": "5.93G", "grad_norm": 2.53153, "loss": 1.83544, "lr": 0.05912, "top1_err": 58.33333, "top5_err": 33.33333}
+[11/07 13:09:06][INFO] train_net.py:  696: Epoch 19 takes 4.14s. Epochs from 10 to 19 take 5.01s in average and 4.11s in median.
+[11/07 13:09:06][INFO] train_net.py:  702: For epoch 19, each iteraction takes 0.69s in average. From epoch 10 to 19, each iteraction takes 0.83s in average.
+[11/07 13:09:06][INFO] precise_bn.py:  129: Computing precise BN statistics for 84 BN layers ...
+[11/07 13:09:14][INFO] logging.py:   99: json_stats: {"RAM": "39.81/501.50G", "_type": "val_epoch", "epoch": "20/300", "gpu_mem": "5.93G", "min_top1_err": 73.91304, "min_top5_err": 34.78261, "time_diff": 0.38280, "top1_err": 73.91304, "top5_err": 34.78261}
+[11/07 13:09:18][INFO] logging.py:   99: json_stats: {"RAM": "41.69/501.50G", "_type": "train_epoch", "dt": 0.51606, "dt_data": 0.51606, "dt_net": 0.24254, "epoch": "21/300", "eta": "0:14:23", "gpu_mem": "5.93G", "grad_norm": 3.40156, "loss": 2.90235, "lr": 0.06159, "top1_err": 79.16667, "top5_err": 37.50000}
+[11/07 13:09:18][INFO] train_net.py:  696: Epoch 20 takes 4.03s. Epochs from 10 to 20 take 4.92s in average and 4.10s in median.
+[11/07 13:09:18][INFO] train_net.py:  702: For epoch 20, each iteraction takes 0.67s in average. From epoch 10 to 20, each iteraction takes 0.82s in average.
+[11/07 13:09:22][INFO] logging.py:   99: json_stats: {"RAM": "41.67/501.50G", "_type": "train_epoch", "dt": 0.51161, "dt_data": 0.51161, "dt_net": 0.24261, "epoch": "22/300", "eta": "0:14:13", "gpu_mem": "5.93G", "grad_norm": 2.32908, "loss": 2.28456, "lr": 0.06407, "top1_err": 62.50000, "top5_err": 33.33333}
+[11/07 13:09:22][INFO] train_net.py:  696: Epoch 21 takes 4.08s. Epochs from 10 to 21 take 4.85s in average and 4.10s in median.
+[11/07 13:09:22][INFO] train_net.py:  702: For epoch 21, each iteraction takes 0.68s in average. From epoch 10 to 21, each iteraction takes 0.81s in average.
+[11/07 13:09:26][INFO] logging.py:   99: json_stats: {"RAM": "41.71/501.50G", "_type": "train_epoch", "dt": 0.49853, "dt_data": 0.49853, "dt_net": 0.24276, "epoch": "23/300", "eta": "0:13:48", "gpu_mem": "5.93G", "grad_norm": 2.12506, "loss": 2.28551, "lr": 0.06655, "top1_err": 66.66667, "top5_err": 37.50000}
+[11/07 13:09:26][INFO] train_net.py:  696: Epoch 22 takes 4.01s. Epochs from 10 to 22 take 4.78s in average and 4.10s in median.
+[11/07 13:09:26][INFO] train_net.py:  702: For epoch 22, each iteraction takes 0.67s in average. From epoch 10 to 22, each iteraction takes 0.80s in average.
+[11/07 13:09:30][INFO] logging.py:   99: json_stats: {"RAM": "41.68/501.50G", "_type": "train_epoch", "dt": 0.49940, "dt_data": 0.49940, "dt_net": 0.24359, "epoch": "24/300", "eta": "0:13:46", "gpu_mem": "5.93G", "grad_norm": 3.00737, "loss": 2.05185, "lr": 0.06902, "top1_err": 66.66667, "top5_err": 25.00000}
+[11/07 13:09:30][INFO] train_net.py:  696: Epoch 23 takes 4.10s. Epochs from 10 to 23 take 4.74s in average and 4.10s in median.
+[11/07 13:09:30][INFO] train_net.py:  702: For epoch 23, each iteraction takes 0.68s in average. From epoch 10 to 23, each iteraction takes 0.79s in average.
+[11/07 13:09:34][INFO] logging.py:   99: json_stats: {"RAM": "41.67/501.50G", "_type": "train_epoch", "dt": 0.50158, "dt_data": 0.50158, "dt_net": 0.24229, "epoch": "25/300", "eta": "0:13:47", "gpu_mem": "5.93G", "grad_norm": 3.03749, "loss": 2.26961, "lr": 0.07150, "top1_err": 70.83333, "top5_err": 33.33333}
+[11/07 13:09:34][INFO] train_net.py:  696: Epoch 24 takes 4.04s. Epochs from 10 to 24 take 4.69s in average and 4.10s in median.
+[11/07 13:09:34][INFO] train_net.py:  702: For epoch 24, each iteraction takes 0.67s in average. From epoch 10 to 24, each iteraction takes 0.78s in average.
+[11/07 13:09:38][INFO] logging.py:   99: json_stats: {"RAM": "41.67/501.50G", "_type": "train_epoch", "dt": 0.50269, "dt_data": 0.50269, "dt_net": 0.24263, "epoch": "26/300", "eta": "0:13:46", "gpu_mem": "5.93G", "grad_norm": 1.33748, "loss": 2.32160, "lr": 0.07398, "top1_err": 75.00000, "top5_err": 33.33333}
+[11/07 13:09:38][INFO] train_net.py:  696: Epoch 25 takes 4.10s. Epochs from 10 to 25 take 4.65s in average and 4.10s in median.
+[11/07 13:09:38][INFO] train_net.py:  702: For epoch 25, each iteraction takes 0.68s in average. From epoch 10 to 25, each iteraction takes 0.78s in average.
+[11/07 13:09:42][INFO] logging.py:   99: json_stats: {"RAM": "41.67/501.50G", "_type": "train_epoch", "dt": 0.50911, "dt_data": 0.50910, "dt_net": 0.24281, "epoch": "27/300", "eta": "0:13:53", "gpu_mem": "5.93G", "grad_norm": 3.03661, "loss": 2.17125, "lr": 0.07645, "top1_err": 62.50000, "top5_err": 33.33333}
+[11/07 13:09:42][INFO] train_net.py:  696: Epoch 26 takes 4.12s. Epochs from 10 to 26 take 4.62s in average and 4.10s in median.
+[11/07 13:09:42][INFO] train_net.py:  702: For epoch 26, each iteraction takes 0.69s in average. From epoch 10 to 26, each iteraction takes 0.77s in average.
+[11/07 13:09:47][INFO] logging.py:   99: json_stats: {"RAM": "41.65/501.50G", "_type": "train_epoch", "dt": 0.49016, "dt_data": 0.49016, "dt_net": 0.24274, "epoch": "28/300", "eta": "0:13:19", "gpu_mem": "5.93G", "grad_norm": 2.40152, "loss": 2.02072, "lr": 0.07893, "top1_err": 75.00000, "top5_err": 16.66667}
+[11/07 13:09:47][INFO] train_net.py:  696: Epoch 27 takes 4.06s. Epochs from 10 to 27 take 4.59s in average and 4.10s in median.
+[11/07 13:09:47][INFO] train_net.py:  702: For epoch 27, each iteraction takes 0.68s in average. From epoch 10 to 27, each iteraction takes 0.76s in average.
+[11/07 13:09:51][INFO] logging.py:   99: json_stats: {"RAM": "39.84/501.50G", "_type": "train_epoch", "dt": 0.51172, "dt_data": 0.51172, "dt_net": 0.24237, "epoch": "29/300", "eta": "0:13:51", "gpu_mem": "5.93G", "grad_norm": 4.84773, "loss": 2.19542, "lr": 0.08141, "top1_err": 70.83333, "top5_err": 33.33333}
+[11/07 13:09:51][INFO] train_net.py:  696: Epoch 28 takes 4.05s. Epochs from 10 to 28 take 4.56s in average and 4.10s in median.
+[11/07 13:09:51][INFO] train_net.py:  702: For epoch 28, each iteraction takes 0.67s in average. From epoch 10 to 28, each iteraction takes 0.76s in average.
+[11/07 13:09:55][INFO] logging.py:   99: json_stats: {"RAM": "41.64/501.50G", "_type": "train_epoch", "dt": 0.51583, "dt_data": 0.51583, "dt_net": 0.24334, "epoch": "30/300", "eta": "0:13:55", "gpu_mem": "5.93G", "grad_norm": 2.59019, "loss": 2.16508, "lr": 0.08388, "top1_err": 70.83333, "top5_err": 33.33333}
+[11/07 13:09:55][INFO] train_net.py:  696: Epoch 29 takes 4.14s. Epochs from 10 to 29 take 4.54s in average and 4.10s in median.
+[11/07 13:09:55][INFO] train_net.py:  702: For epoch 29, each iteraction takes 0.69s in average. From epoch 10 to 29, each iteraction takes 0.76s in average.
+[11/07 13:09:55][INFO] precise_bn.py:  129: Computing precise BN statistics for 84 BN layers ...
+[11/07 13:10:01][INFO] logging.py:   99: json_stats: {"RAM": "41.71/501.50G", "_type": "val_epoch", "epoch": "30/300", "gpu_mem": "5.93G", "min_top1_err": 73.91304, "min_top5_err": 34.78261, "time_diff": 0.37423, "top1_err": 100.00000, "top5_err": 56.52174}
+[11/07 13:10:05][INFO] logging.py:   99: json_stats: {"RAM": "41.68/501.50G", "_type": "train_epoch", "dt": 0.51919, "dt_data": 0.51919, "dt_net": 0.24276, "epoch": "31/300", "eta": "0:13:57", "gpu_mem": "5.93G", "grad_norm": 1.11288, "loss": 1.90069, "lr": 0.08636, "top1_err": 58.33333, "top5_err": 25.00000}
+[11/07 13:10:05][INFO] train_net.py:  696: Epoch 30 takes 4.16s. Epochs from 10 to 30 take 4.52s in average and 4.10s in median.
+[11/07 13:10:05][INFO] train_net.py:  702: For epoch 30, each iteraction takes 0.69s in average. From epoch 10 to 30, each iteraction takes 0.75s in average.
+[11/07 13:10:09][INFO] logging.py:   99: json_stats: {"RAM": "41.68/501.50G", "_type": "train_epoch", "dt": 0.50641, "dt_data": 0.50641, "dt_net": 0.24245, "epoch": "32/300", "eta": "0:13:34", "gpu_mem": "5.93G", "grad_norm": 5.59701, "loss": 2.57560, "lr": 0.08884, "top1_err": 66.66667, "top5_err": 29.16667}
+[11/07 13:10:09][INFO] train_net.py:  696: Epoch 31 takes 4.07s. Epochs from 10 to 31 take 4.50s in average and 4.10s in median.
+[11/07 13:10:09][INFO] train_net.py:  702: For epoch 31, each iteraction takes 0.68s in average. From epoch 10 to 31, each iteraction takes 0.75s in average.
+[11/07 13:10:13][INFO] logging.py:   99: json_stats: {"RAM": "41.70/501.50G", "_type": "train_epoch", "dt": 0.50385, "dt_data": 0.50385, "dt_net": 0.24275, "epoch": "33/300", "eta": "0:13:27", "gpu_mem": "5.93G", "grad_norm": 2.67428, "loss": 2.26236, "lr": 0.09131, "top1_err": 62.50000, "top5_err": 29.16667}
+[11/07 13:10:13][INFO] train_net.py:  696: Epoch 32 takes 4.13s. Epochs from 10 to 32 take 4.49s in average and 4.10s in median.
+[11/07 13:10:13][INFO] train_net.py:  702: For epoch 32, each iteraction takes 0.69s in average. From epoch 10 to 32, each iteraction takes 0.75s in average.
+[11/07 13:10:17][INFO] logging.py:   99: json_stats: {"RAM": "41.69/501.50G", "_type": "train_epoch", "dt": 0.49953, "dt_data": 0.49953, "dt_net": 0.24290, "epoch": "34/300", "eta": "0:13:17", "gpu_mem": "5.93G", "grad_norm": 1.38252, "loss": 2.10255, "lr": 0.09379, "top1_err": 66.66667, "top5_err": 25.00000}
+[11/07 13:10:17][INFO] train_net.py:  696: Epoch 33 takes 4.09s. Epochs from 10 to 33 take 4.47s in average and 4.10s in median.
+[11/07 13:10:17][INFO] train_net.py:  702: For epoch 33, each iteraction takes 0.68s in average. From epoch 10 to 33, each iteraction takes 0.74s in average.
+[11/07 13:10:21][INFO] logging.py:   99: json_stats: {"RAM": "41.69/501.50G", "_type": "train_epoch", "dt": 0.48982, "dt_data": 0.48982, "dt_net": 0.24286, "epoch": "35/300", "eta": "0:12:58", "gpu_mem": "5.93G", "grad_norm": 1.02507, "loss": 1.87822, "lr": 0.09627, "top1_err": 54.16667, "top5_err": 33.33333}
+[11/07 13:10:21][INFO] train_net.py:  696: Epoch 34 takes 4.08s. Epochs from 10 to 34 take 4.45s in average and 4.10s in median.
+[11/07 13:10:21][INFO] train_net.py:  702: For epoch 34, each iteraction takes 0.68s in average. From epoch 10 to 34, each iteraction takes 0.74s in average.
+[11/07 13:10:25][INFO] logging.py:   99: json_stats: {"RAM": "38.73/501.50G", "_type": "train_epoch", "dt": 0.51665, "dt_data": 0.51665, "dt_net": 0.24281, "epoch": "36/300", "eta": "0:13:38", "gpu_mem": "5.93G", "grad_norm": 3.54989, "loss": 2.06838, "lr": 0.09652, "top1_err": 58.33333, "top5_err": 20.83333}
+[11/07 13:10:25][INFO] train_net.py:  696: Epoch 35 takes 4.08s. Epochs from 10 to 35 take 4.44s in average and 4.09s in median.
+[11/07 13:10:25][INFO] train_net.py:  702: For epoch 35, each iteraction takes 0.68s in average. From epoch 10 to 35, each iteraction takes 0.74s in average.
+[11/07 13:10:30][INFO] logging.py:   99: json_stats: {"RAM": "41.15/501.50G", "_type": "train_epoch", "dt": 0.49772, "dt_data": 0.49772, "dt_net": 0.24312, "epoch": "37/300", "eta": "0:13:05", "gpu_mem": "5.93G", "grad_norm": 1.67692, "loss": 2.43600, "lr": 0.09633, "top1_err": 79.16667, "top5_err": 25.00000}
+[11/07 13:10:30][INFO] train_net.py:  696: Epoch 36 takes 4.16s. Epochs from 10 to 36 take 4.43s in average and 4.10s in median.
+[11/07 13:10:30][INFO] train_net.py:  702: For epoch 36, each iteraction takes 0.69s in average. From epoch 10 to 36, each iteraction takes 0.74s in average.
+[11/07 13:10:34][INFO] logging.py:   99: json_stats: {"RAM": "41.72/501.50G", "_type": "train_epoch", "dt": 0.51423, "dt_data": 0.51423, "dt_net": 0.24400, "epoch": "38/300", "eta": "0:13:28", "gpu_mem": "5.93G", "grad_norm": 3.16475, "loss": 1.93971, "lr": 0.09613, "top1_err": 62.50000, "top5_err": 25.00000}
+[11/07 13:10:34][INFO] train_net.py:  696: Epoch 37 takes 4.21s. Epochs from 10 to 37 take 4.42s in average and 4.10s in median.
+[11/07 13:10:34][INFO] train_net.py:  702: For epoch 37, each iteraction takes 0.70s in average. From epoch 10 to 37, each iteraction takes 0.74s in average.
+[11/07 13:10:38][INFO] logging.py:   99: json_stats: {"RAM": "41.69/501.50G", "_type": "train_epoch", "dt": 0.49376, "dt_data": 0.49376, "dt_net": 0.24293, "epoch": "39/300", "eta": "0:12:53", "gpu_mem": "5.93G", "grad_norm": 2.41801, "loss": 2.26226, "lr": 0.09592, "top1_err": 75.00000, "top5_err": 33.33333}
+[11/07 13:10:38][INFO] train_net.py:  696: Epoch 38 takes 4.04s. Epochs from 10 to 38 take 4.41s in average and 4.10s in median.
+[11/07 13:10:38][INFO] train_net.py:  702: For epoch 38, each iteraction takes 0.67s in average. From epoch 10 to 38, each iteraction takes 0.73s in average.
+[11/07 13:10:42][INFO] logging.py:   99: json_stats: {"RAM": "41.71/501.50G", "_type": "train_epoch", "dt": 0.50242, "dt_data": 0.50242, "dt_net": 0.24363, "epoch": "40/300", "eta": "0:13:03", "gpu_mem": "5.93G", "grad_norm": 1.69444, "loss": 2.24672, "lr": 0.09571, "top1_err": 66.66667, "top5_err": 25.00000}
+[11/07 13:10:42][INFO] train_net.py:  696: Epoch 39 takes 4.07s. Epochs from 10 to 39 take 4.40s in average and 4.09s in median.
+[11/07 13:10:42][INFO] train_net.py:  702: For epoch 39, each iteraction takes 0.68s in average. From epoch 10 to 39, each iteraction takes 0.73s in average.
+[11/07 13:10:42][INFO] precise_bn.py:  129: Computing precise BN statistics for 84 BN layers ...
+[11/07 13:10:48][INFO] logging.py:   99: json_stats: {"RAM": "41.70/501.50G", "_type": "val_epoch", "epoch": "40/300", "gpu_mem": "5.93G", "min_top1_err": 73.91304, "min_top5_err": 34.78261, "time_diff": 0.36795, "top1_err": 91.30435, "top5_err": 52.17391}
+[11/07 13:10:52][INFO] logging.py:   99: json_stats: {"RAM": "41.65/501.50G", "_type": "train_epoch", "dt": 0.49931, "dt_data": 0.49931, "dt_net": 0.24318, "epoch": "41/300", "eta": "0:12:55", "gpu_mem": "5.93G", "grad_norm": 1.05857, "loss": 1.99558, "lr": 0.09550, "top1_err": 75.00000, "top5_err": 29.16667}
+[11/07 13:10:52][INFO] train_net.py:  696: Epoch 40 takes 4.07s. Epochs from 10 to 40 take 4.39s in average and 4.09s in median.
+[11/07 13:10:52][INFO] train_net.py:  702: For epoch 40, each iteraction takes 0.68s in average. From epoch 10 to 40, each iteraction takes 0.73s in average.
+[11/07 13:10:56][INFO] logging.py:   99: json_stats: {"RAM": "41.64/501.50G", "_type": "train_epoch", "dt": 0.50449, "dt_data": 0.50449, "dt_net": 0.24301, "epoch": "42/300", "eta": "0:13:00", "gpu_mem": "5.93G", "grad_norm": 0.78392, "loss": 2.04234, "lr": 0.09528, "top1_err": 70.83333, "top5_err": 33.33333}
+[11/07 13:10:56][INFO] train_net.py:  696: Epoch 41 takes 4.12s. Epochs from 10 to 41 take 4.38s in average and 4.09s in median.
+[11/07 13:10:56][INFO] train_net.py:  702: For epoch 41, each iteraction takes 0.69s in average. From epoch 10 to 41, each iteraction takes 0.73s in average.
+[11/07 13:11:00][INFO] logging.py:   99: json_stats: {"RAM": "41.63/501.50G", "_type": "train_epoch", "dt": 0.49149, "dt_data": 0.49149, "dt_net": 0.24278, "epoch": "43/300", "eta": "0:12:37", "gpu_mem": "5.93G", "grad_norm": 1.05542, "loss": 1.86083, "lr": 0.09505, "top1_err": 66.66667, "top5_err": 25.00000}
+[11/07 13:11:00][INFO] train_net.py:  696: Epoch 42 takes 4.10s. Epochs from 10 to 42 take 4.37s in average and 4.10s in median.
+[11/07 13:11:00][INFO] train_net.py:  702: For epoch 42, each iteraction takes 0.68s in average. From epoch 10 to 42, each iteraction takes 0.73s in average.
+[11/07 13:11:04][INFO] logging.py:   99: json_stats: {"RAM": "39.94/501.50G", "_type": "train_epoch", "dt": 0.56111, "dt_data": 0.56111, "dt_net": 0.24265, "epoch": "44/300", "eta": "0:14:21", "gpu_mem": "5.93G", "grad_norm": 1.74910, "loss": 3.21019, "lr": 0.09482, "top1_err": 58.33333, "top5_err": 33.33333}
+[11/07 13:11:04][INFO] train_net.py:  696: Epoch 43 takes 4.13s. Epochs from 10 to 43 take 4.36s in average and 4.10s in median.
+[11/07 13:11:04][INFO] train_net.py:  702: For epoch 43, each iteraction takes 0.69s in average. From epoch 10 to 43, each iteraction takes 0.73s in average.
+[11/07 13:11:08][INFO] logging.py:   99: json_stats: {"RAM": "41.63/501.50G", "_type": "train_epoch", "dt": 0.50157, "dt_data": 0.50157, "dt_net": 0.24272, "epoch": "45/300", "eta": "0:12:47", "gpu_mem": "5.93G", "grad_norm": 2.35865, "loss": 2.21891, "lr": 0.09459, "top1_err": 66.66667, "top5_err": 25.00000}
+[11/07 13:11:08][INFO] train_net.py:  696: Epoch 44 takes 4.09s. Epochs from 10 to 44 take 4.35s in average and 4.10s in median.
+[11/07 13:11:08][INFO] train_net.py:  702: For epoch 44, each iteraction takes 0.68s in average. From epoch 10 to 44, each iteraction takes 0.73s in average.
+[11/07 13:11:12][INFO] logging.py:   99: json_stats: {"RAM": "41.63/501.50G", "_type": "train_epoch", "dt": 0.49875, "dt_data": 0.49875, "dt_net": 0.24354, "epoch": "46/300", "eta": "0:12:40", "gpu_mem": "5.93G", "grad_norm": 2.19506, "loss": 2.17165, "lr": 0.09435, "top1_err": 66.66667, "top5_err": 25.00000}
+[11/07 13:11:12][INFO] train_net.py:  696: Epoch 45 takes 4.07s. Epochs from 10 to 45 take 4.35s in average and 4.10s in median.
+[11/07 13:11:12][INFO] train_net.py:  702: For epoch 45, each iteraction takes 0.68s in average. From epoch 10 to 45, each iteraction takes 0.72s in average.
+[11/07 13:11:16][INFO] logging.py:   99: json_stats: {"RAM": "41.63/501.50G", "_type": "train_epoch", "dt": 0.51082, "dt_data": 0.51082, "dt_net": 0.24235, "epoch": "47/300", "eta": "0:12:55", "gpu_mem": "5.93G", "grad_norm": 1.34848, "loss": 2.04021, "lr": 0.09411, "top1_err": 62.50000, "top5_err": 25.00000}
+[11/07 13:11:16][INFO] train_net.py:  696: Epoch 46 takes 4.03s. Epochs from 10 to 46 take 4.34s in average and 4.09s in median.
+[11/07 13:11:16][INFO] train_net.py:  702: For epoch 46, each iteraction takes 0.67s in average. From epoch 10 to 46, each iteraction takes 0.72s in average.
+[11/07 13:11:20][INFO] logging.py:   99: json_stats: {"RAM": "41.64/501.50G", "_type": "train_epoch", "dt": 0.51090, "dt_data": 0.51090, "dt_net": 0.24372, "epoch": "48/300", "eta": "0:12:52", "gpu_mem": "5.93G", "grad_norm": 0.82318, "loss": 2.10727, "lr": 0.09386, "top1_err": 62.50000, "top5_err": 20.83333}
+[11/07 13:11:20][INFO] train_net.py:  696: Epoch 47 takes 4.01s. Epochs from 10 to 47 take 4.33s in average and 4.09s in median.
+[11/07 13:11:20][INFO] train_net.py:  702: For epoch 47, each iteraction takes 0.67s in average. From epoch 10 to 47, each iteraction takes 0.72s in average.
+[11/07 13:11:24][INFO] logging.py:   99: json_stats: {"RAM": "41.63/501.50G", "_type": "train_epoch", "dt": 0.50242, "dt_data": 0.50242, "dt_net": 0.24292, "epoch": "49/300", "eta": "0:12:36", "gpu_mem": "5.93G", "grad_norm": 0.63017, "loss": 2.03750, "lr": 0.09360, "top1_err": 66.66667, "top5_err": 20.83333}
+[11/07 13:11:24][INFO] train_net.py:  696: Epoch 48 takes 4.07s. Epochs from 10 to 48 take 4.32s in average and 4.09s in median.
+[11/07 13:11:24][INFO] train_net.py:  702: For epoch 48, each iteraction takes 0.68s in average. From epoch 10 to 48, each iteraction takes 0.72s in average.
+[11/07 13:11:28][INFO] logging.py:   99: json_stats: {"RAM": "41.63/501.50G", "_type": "train_epoch", "dt": 0.50034, "dt_data": 0.50034, "dt_net": 0.24343, "epoch": "50/300", "eta": "0:12:30", "gpu_mem": "5.93G", "grad_norm": 0.59620, "loss": 1.94962, "lr": 0.09334, "top1_err": 62.50000, "top5_err": 20.83333}
+[11/07 13:11:28][INFO] train_net.py:  696: Epoch 49 takes 4.06s. Epochs from 10 to 49 take 4.32s in average and 4.09s in median.
+[11/07 13:11:28][INFO] train_net.py:  702: For epoch 49, each iteraction takes 0.68s in average. From epoch 10 to 49, each iteraction takes 0.72s in average.
+[11/07 13:11:28][INFO] precise_bn.py:  129: Computing precise BN statistics for 84 BN layers ...
+[11/07 13:11:34][INFO] logging.py:   99: json_stats: {"RAM": "41.63/501.50G", "_type": "val_epoch", "epoch": "50/300", "gpu_mem": "5.93G", "min_top1_err": 73.91304, "min_top5_err": 34.78261, "time_diff": 0.37285, "top1_err": 95.65217, "top5_err": 39.13043}
+[11/07 13:11:38][INFO] logging.py:   99: json_stats: {"RAM": "41.61/501.50G", "_type": "train_epoch", "dt": 0.48866, "dt_data": 0.48866, "dt_net": 0.24280, "epoch": "51/300", "eta": "0:12:09", "gpu_mem": "5.93G", "grad_norm": 0.79051, "loss": 1.98335, "lr": 0.09308, "top1_err": 62.50000, "top5_err": 20.83333}
+[11/07 13:11:38][INFO] train_net.py:  696: Epoch 50 takes 4.03s. Epochs from 10 to 50 take 4.31s in average and 4.08s in median.
+[11/07 13:11:38][INFO] train_net.py:  702: For epoch 50, each iteraction takes 0.67s in average. From epoch 10 to 50, each iteraction takes 0.72s in average.
+[11/07 13:11:42][INFO] logging.py:   99: json_stats: {"RAM": "41.05/501.50G", "_type": "train_epoch", "dt": 0.53435, "dt_data": 0.53434, "dt_net": 0.24264, "epoch": "52/300", "eta": "0:13:15", "gpu_mem": "5.93G", "grad_norm": 0.86445, "loss": 1.98335, "lr": 0.09281, "top1_err": 62.50000, "top5_err": 29.16667}
+[11/07 13:11:42][INFO] train_net.py:  696: Epoch 51 takes 4.26s. Epochs from 10 to 51 take 4.31s in average and 4.09s in median.
+[11/07 13:11:42][INFO] train_net.py:  702: For epoch 51, each iteraction takes 0.71s in average. From epoch 10 to 51, each iteraction takes 0.72s in average.
+[11/07 13:11:46][INFO] logging.py:   99: json_stats: {"RAM": "41.64/501.50G", "_type": "train_epoch", "dt": 0.53229, "dt_data": 0.53229, "dt_net": 0.24320, "epoch": "53/300", "eta": "0:13:08", "gpu_mem": "5.93G", "grad_norm": 0.98712, "loss": 1.96513, "lr": 0.09254, "top1_err": 62.50000, "top5_err": 20.83333}
+[11/07 13:11:46][INFO] train_net.py:  696: Epoch 52 takes 4.13s. Epochs from 10 to 52 take 4.30s in average and 4.09s in median.
+[11/07 13:11:46][INFO] train_net.py:  702: For epoch 52, each iteraction takes 0.69s in average. From epoch 10 to 52, each iteraction takes 0.72s in average.
+[11/07 13:11:50][INFO] logging.py:   99: json_stats: {"RAM": "41.65/501.50G", "_type": "train_epoch", "dt": 0.51099, "dt_data": 0.51099, "dt_net": 0.24350, "epoch": "54/300", "eta": "0:12:34", "gpu_mem": "5.93G", "grad_norm": 0.44154, "loss": 1.98525, "lr": 0.09226, "top1_err": 62.50000, "top5_err": 20.83333}
+[11/07 13:11:50][INFO] train_net.py:  696: Epoch 53 takes 4.08s. Epochs from 10 to 53 take 4.30s in average and 4.09s in median.
+[11/07 13:11:50][INFO] train_net.py:  702: For epoch 53, each iteraction takes 0.68s in average. From epoch 10 to 53, each iteraction takes 0.72s in average.
+[11/07 13:11:54][INFO] logging.py:   99: json_stats: {"RAM": "41.65/501.50G", "_type": "train_epoch", "dt": 0.50305, "dt_data": 0.50305, "dt_net": 0.24322, "epoch": "55/300", "eta": "0:12:19", "gpu_mem": "5.93G", "grad_norm": 0.38701, "loss": 2.01772, "lr": 0.09198, "top1_err": 62.50000, "top5_err": 20.83333}
+[11/07 13:11:54][INFO] train_net.py:  696: Epoch 54 takes 4.14s. Epochs from 10 to 54 take 4.30s in average and 4.09s in median.
+[11/07 13:11:54][INFO] train_net.py:  702: For epoch 54, each iteraction takes 0.69s in average. From epoch 10 to 54, each iteraction takes 0.72s in average.
+[11/07 13:11:59][INFO] logging.py:   99: json_stats: {"RAM": "41.65/501.50G", "_type": "train_epoch", "dt": 0.49104, "dt_data": 0.49103, "dt_net": 0.24367, "epoch": "56/300", "eta": "0:11:58", "gpu_mem": "5.93G", "grad_norm": 0.56352, "loss": 2.00456, "lr": 0.09169, "top1_err": 62.50000, "top5_err": 20.83333}
+[11/07 13:11:59][INFO] train_net.py:  696: Epoch 55 takes 4.07s. Epochs from 10 to 55 take 4.29s in average and 4.09s in median.
+[11/07 13:11:59][INFO] train_net.py:  702: For epoch 55, each iteraction takes 0.68s in average. From epoch 10 to 55, each iteraction takes 0.72s in average.
+[11/07 13:12:03][INFO] logging.py:   99: json_stats: {"RAM": "41.65/501.50G", "_type": "train_epoch", "dt": 0.50969, "dt_data": 0.50969, "dt_net": 0.24305, "epoch": "57/300", "eta": "0:12:23", "gpu_mem": "5.93G", "grad_norm": 0.47914, "loss": 1.95250, "lr": 0.09140, "top1_err": 62.50000, "top5_err": 29.16667}
+[11/07 13:12:03][INFO] train_net.py:  696: Epoch 56 takes 4.29s. Epochs from 10 to 56 take 4.29s in average and 4.09s in median.
+[11/07 13:12:03][INFO] train_net.py:  702: For epoch 56, each iteraction takes 0.72s in average. From epoch 10 to 56, each iteraction takes 0.72s in average.
+[11/07 13:12:07][INFO] logging.py:   99: json_stats: {"RAM": "41.65/501.50G", "_type": "train_epoch", "dt": 0.51031, "dt_data": 0.51031, "dt_net": 0.24266, "epoch": "58/300", "eta": "0:12:20", "gpu_mem": "5.93G", "grad_norm": 0.61522, "loss": 1.96631, "lr": 0.09111, "top1_err": 62.50000, "top5_err": 16.66667}
+[11/07 13:12:07][INFO] train_net.py:  696: Epoch 57 takes 4.12s. Epochs from 10 to 57 take 4.29s in average and 4.09s in median.
+[11/07 13:12:07][INFO] train_net.py:  702: For epoch 57, each iteraction takes 0.69s in average. From epoch 10 to 57, each iteraction takes 0.71s in average.
+[11/07 13:12:11][INFO] logging.py:   99: json_stats: {"RAM": "41.64/501.50G", "_type": "train_epoch", "dt": 0.50352, "dt_data": 0.50352, "dt_net": 0.24297, "epoch": "59/300", "eta": "0:12:08", "gpu_mem": "5.93G", "grad_norm": 0.43050, "loss": 2.02467, "lr": 0.09081, "top1_err": 70.83333, "top5_err": 25.00000}
+[11/07 13:12:11][INFO] train_net.py:  696: Epoch 58 takes 4.05s. Epochs from 10 to 58 take 4.28s in average and 4.09s in median.
+[11/07 13:12:11][INFO] train_net.py:  702: For epoch 58, each iteraction takes 0.67s in average. From epoch 10 to 58, each iteraction takes 0.71s in average.
+[11/07 13:12:15][INFO] logging.py:   99: json_stats: {"RAM": "38.90/501.50G", "_type": "train_epoch", "dt": 0.52729, "dt_data": 0.52729, "dt_net": 0.24287, "epoch": "60/300", "eta": "0:12:39", "gpu_mem": "5.93G", "grad_norm": 0.76026, "loss": 2.04290, "lr": 0.09050, "top1_err": 62.50000, "top5_err": 37.50000}
+[11/07 13:12:15][INFO] train_net.py:  696: Epoch 59 takes 4.08s. Epochs from 10 to 59 take 4.28s in average and 4.09s in median.
+[11/07 13:12:15][INFO] train_net.py:  702: For epoch 59, each iteraction takes 0.68s in average. From epoch 10 to 59, each iteraction takes 0.71s in average.
+[11/07 13:12:15][INFO] precise_bn.py:  129: Computing precise BN statistics for 84 BN layers ...
+[11/07 13:12:21][INFO] logging.py:   99: json_stats: {"RAM": "41.65/501.50G", "_type": "val_epoch", "epoch": "60/300", "gpu_mem": "5.93G", "min_top1_err": 73.91304, "min_top5_err": 34.78261, "time_diff": 0.38033, "top1_err": 95.65217, "top5_err": 39.13043}
+[11/07 13:12:25][INFO] logging.py:   99: json_stats: {"RAM": "41.64/501.50G", "_type": "train_epoch", "dt": 0.51588, "dt_data": 0.51587, "dt_net": 0.24270, "epoch": "61/300", "eta": "0:12:19", "gpu_mem": "5.93G", "grad_norm": 0.57594, "loss": 1.97643, "lr": 0.09019, "top1_err": 62.50000, "top5_err": 29.16667}
+[11/07 13:12:25][INFO] train_net.py:  696: Epoch 60 takes 4.12s. Epochs from 10 to 60 take 4.27s in average and 4.09s in median.
+[11/07 13:12:25][INFO] train_net.py:  702: For epoch 60, each iteraction takes 0.69s in average. From epoch 10 to 60, each iteraction takes 0.71s in average.
+[11/07 13:12:29][INFO] logging.py:   99: json_stats: {"RAM": "41.64/501.50G", "_type": "train_epoch", "dt": 0.50188, "dt_data": 0.50188, "dt_net": 0.24274, "epoch": "62/300", "eta": "0:11:56", "gpu_mem": "5.93G", "grad_norm": 0.87965, "loss": 1.99025, "lr": 0.08988, "top1_err": 83.33333, "top5_err": 20.83333}
+[11/07 13:12:29][INFO] train_net.py:  696: Epoch 61 takes 4.00s. Epochs from 10 to 61 take 4.27s in average and 4.09s in median.
+[11/07 13:12:29][INFO] train_net.py:  702: For epoch 61, each iteraction takes 0.67s in average. From epoch 10 to 61, each iteraction takes 0.71s in average.
+[11/07 13:12:33][INFO] logging.py:   99: json_stats: {"RAM": "41.66/501.50G", "_type": "train_epoch", "dt": 0.52432, "dt_data": 0.52432, "dt_net": 0.24381, "epoch": "63/300", "eta": "0:12:25", "gpu_mem": "5.93G", "grad_norm": 0.63644, "loss": 1.96003, "lr": 0.08956, "top1_err": 62.50000, "top5_err": 20.83333}
+[11/07 13:12:33][INFO] train_net.py:  696: Epoch 62 takes 4.18s. Epochs from 10 to 62 take 4.27s in average and 4.09s in median.
+[11/07 13:12:33][INFO] train_net.py:  702: For epoch 62, each iteraction takes 0.70s in average. From epoch 10 to 62, each iteraction takes 0.71s in average.
+[11/07 13:12:37][INFO] logging.py:   99: json_stats: {"RAM": "41.65/501.50G", "_type": "train_epoch", "dt": 0.51016, "dt_data": 0.51016, "dt_net": 0.24268, "epoch": "64/300", "eta": "0:12:02", "gpu_mem": "5.93G", "grad_norm": 0.69969, "loss": 1.98582, "lr": 0.08924, "top1_err": 62.50000, "top5_err": 29.16667}
+[11/07 13:12:37][INFO] train_net.py:  696: Epoch 63 takes 4.07s. Epochs from 10 to 63 take 4.26s in average and 4.09s in median.
+[11/07 13:12:37][INFO] train_net.py:  702: For epoch 63, each iteraction takes 0.68s in average. From epoch 10 to 63, each iteraction takes 0.71s in average.
+[11/07 13:12:41][INFO] logging.py:   99: json_stats: {"RAM": "41.68/501.50G", "_type": "train_epoch", "dt": 0.52250, "dt_data": 0.52250, "dt_net": 0.24471, "epoch": "65/300", "eta": "0:12:16", "gpu_mem": "5.93G", "grad_norm": 0.51154, "loss": 1.90881, "lr": 0.08891, "top1_err": 62.50000, "top5_err": 12.50000}
+[11/07 13:12:41][INFO] train_net.py:  696: Epoch 64 takes 4.22s. Epochs from 10 to 64 take 4.26s in average and 4.09s in median.
+[11/07 13:12:41][INFO] train_net.py:  702: For epoch 64, each iteraction takes 0.70s in average. From epoch 10 to 64, each iteraction takes 0.71s in average.
+[11/07 13:12:46][INFO] logging.py:   99: json_stats: {"RAM": "41.65/501.50G", "_type": "train_epoch", "dt": 0.50472, "dt_data": 0.50472, "dt_net": 0.24274, "epoch": "66/300", "eta": "0:11:48", "gpu_mem": "5.93G", "grad_norm": 0.92696, "loss": 1.94351, "lr": 0.08858, "top1_err": 62.50000, "top5_err": 20.83333}
+[11/07 13:12:46][INFO] train_net.py:  696: Epoch 65 takes 4.12s. Epochs from 10 to 65 take 4.26s in average and 4.09s in median.
+[11/07 13:12:46][INFO] train_net.py:  702: For epoch 65, each iteraction takes 0.69s in average. From epoch 10 to 65, each iteraction takes 0.71s in average.
+[11/07 13:12:50][INFO] logging.py:   99: json_stats: {"RAM": "41.63/501.50G", "_type": "train_epoch", "dt": 0.51001, "dt_data": 0.51001, "dt_net": 0.24276, "epoch": "67/300", "eta": "0:11:52", "gpu_mem": "5.93G", "grad_norm": 1.29211, "loss": 1.83281, "lr": 0.08825, "top1_err": 62.50000, "top5_err": 12.50000}
+[11/07 13:12:50][INFO] train_net.py:  696: Epoch 66 takes 4.06s. Epochs from 10 to 66 take 4.26s in average and 4.09s in median.
+[11/07 13:12:50][INFO] train_net.py:  702: For epoch 66, each iteraction takes 0.68s in average. From epoch 10 to 66, each iteraction takes 0.71s in average.
+[11/07 13:12:54][INFO] logging.py:   99: json_stats: {"RAM": "40.68/501.50G", "_type": "train_epoch", "dt": 0.51542, "dt_data": 0.51542, "dt_net": 0.24350, "epoch": "68/300", "eta": "0:11:57", "gpu_mem": "5.93G", "grad_norm": 2.16351, "loss": 2.07546, "lr": 0.08791, "top1_err": 66.66667, "top5_err": 20.83333}
+[11/07 13:12:54][INFO] train_net.py:  696: Epoch 67 takes 4.23s. Epochs from 10 to 67 take 4.26s in average and 4.09s in median.
+[11/07 13:12:54][INFO] train_net.py:  702: For epoch 67, each iteraction takes 0.70s in average. From epoch 10 to 67, each iteraction takes 0.71s in average.
+[11/07 13:12:58][INFO] logging.py:   99: json_stats: {"RAM": "41.64/501.50G", "_type": "train_epoch", "dt": 0.50295, "dt_data": 0.50295, "dt_net": 0.24321, "epoch": "69/300", "eta": "0:11:37", "gpu_mem": "5.93G", "grad_norm": 0.85565, "loss": 2.00553, "lr": 0.08756, "top1_err": 79.16667, "top5_err": 25.00000}
+[11/07 13:12:58][INFO] train_net.py:  696: Epoch 68 takes 4.01s. Epochs from 10 to 68 take 4.25s in average and 4.09s in median.
+[11/07 13:12:58][INFO] train_net.py:  702: For epoch 68, each iteraction takes 0.67s in average. From epoch 10 to 68, each iteraction takes 0.71s in average.
+[11/07 13:13:02][INFO] logging.py:   99: json_stats: {"RAM": "41.65/501.50G", "_type": "train_epoch", "dt": 0.49872, "dt_data": 0.49872, "dt_net": 0.24363, "epoch": "70/300", "eta": "0:11:28", "gpu_mem": "5.93G", "grad_norm": 0.34427, "loss": 1.94571, "lr": 0.08722, "top1_err": 62.50000, "top5_err": 20.83333}
+[11/07 13:13:02][INFO] train_net.py:  696: Epoch 69 takes 4.07s. Epochs from 10 to 69 take 4.25s in average and 4.09s in median.
+[11/07 13:13:02][INFO] train_net.py:  702: For epoch 69, each iteraction takes 0.68s in average. From epoch 10 to 69, each iteraction takes 0.71s in average.
+[11/07 13:13:02][INFO] precise_bn.py:  129: Computing precise BN statistics for 84 BN layers ...
+[11/07 13:13:07][INFO] logging.py:   99: json_stats: {"RAM": "41.65/501.50G", "_type": "val_epoch", "epoch": "70/300", "gpu_mem": "5.93G", "min_top1_err": 73.91304, "min_top5_err": 34.78261, "time_diff": 0.36758, "top1_err": 91.30435, "top5_err": 34.78261}
+[11/07 13:13:11][INFO] logging.py:   99: json_stats: {"RAM": "41.65/501.50G", "_type": "train_epoch", "dt": 0.50596, "dt_data": 0.50596, "dt_net": 0.24294, "epoch": "71/300", "eta": "0:11:35", "gpu_mem": "5.93G", "grad_norm": 0.71903, "loss": 1.90180, "lr": 0.08686, "top1_err": 62.50000, "top5_err": 20.83333}
+[11/07 13:13:11][INFO] train_net.py:  696: Epoch 70 takes 4.05s. Epochs from 10 to 70 take 4.25s in average and 4.08s in median.
+[11/07 13:13:11][INFO] train_net.py:  702: For epoch 70, each iteraction takes 0.67s in average. From epoch 10 to 70, each iteraction takes 0.71s in average.
+[11/07 13:13:15][INFO] logging.py:   99: json_stats: {"RAM": "41.64/501.50G", "_type": "train_epoch", "dt": 0.51548, "dt_data": 0.51548, "dt_net": 0.24282, "epoch": "72/300", "eta": "0:11:45", "gpu_mem": "5.93G", "grad_norm": 0.86907, "loss": 1.98637, "lr": 0.08651, "top1_err": 62.50000, "top5_err": 16.66667}
+[11/07 13:13:15][INFO] train_net.py:  696: Epoch 71 takes 4.01s. Epochs from 10 to 71 take 4.24s in average and 4.08s in median.
+[11/07 13:13:15][INFO] train_net.py:  702: For epoch 71, each iteraction takes 0.67s in average. From epoch 10 to 71, each iteraction takes 0.71s in average.
+[11/07 13:13:19][INFO] logging.py:   99: json_stats: {"RAM": "41.65/501.50G", "_type": "train_epoch", "dt": 0.49199, "dt_data": 0.49199, "dt_net": 0.24317, "epoch": "73/300", "eta": "0:11:10", "gpu_mem": "5.93G", "grad_norm": 1.06252, "loss": 1.91019, "lr": 0.08615, "top1_err": 62.50000, "top5_err": 12.50000}
+[11/07 13:13:19][INFO] train_net.py:  696: Epoch 72 takes 4.03s. Epochs from 10 to 72 take 4.24s in average and 4.08s in median.
+[11/07 13:13:19][INFO] train_net.py:  702: For epoch 72, each iteraction takes 0.67s in average. From epoch 10 to 72, each iteraction takes 0.71s in average.
+[11/07 13:13:24][INFO] logging.py:   99: json_stats: {"RAM": "41.64/501.50G", "_type": "train_epoch", "dt": 0.50639, "dt_data": 0.50639, "dt_net": 0.24266, "epoch": "74/300", "eta": "0:11:26", "gpu_mem": "5.93G", "grad_norm": 0.59208, "loss": 1.98444, "lr": 0.08578, "top1_err": 62.50000, "top5_err": 33.33333}
+[11/07 13:13:24][INFO] train_net.py:  696: Epoch 73 takes 4.02s. Epochs from 10 to 73 take 4.24s in average and 4.08s in median.
+[11/07 13:13:24][INFO] train_net.py:  702: For epoch 73, each iteraction takes 0.67s in average. From epoch 10 to 73, each iteraction takes 0.71s in average.
+[11/07 13:13:27][INFO] logging.py:   99: json_stats: {"RAM": "38.73/501.50G", "_type": "train_epoch", "dt": 0.52182, "dt_data": 0.52182, "dt_net": 0.24302, "epoch": "75/300", "eta": "0:11:44", "gpu_mem": "5.93G", "grad_norm": 0.42962, "loss": 2.01082, "lr": 0.08542, "top1_err": 79.16667, "top5_err": 25.00000}
+[11/07 13:13:27][INFO] train_net.py:  696: Epoch 74 takes 3.98s. Epochs from 10 to 74 take 4.23s in average and 4.08s in median.
+[11/07 13:13:27][INFO] train_net.py:  702: For epoch 74, each iteraction takes 0.66s in average. From epoch 10 to 74, each iteraction takes 0.71s in average.
+[11/07 13:13:32][INFO] logging.py:   99: json_stats: {"RAM": "41.35/501.50G", "_type": "train_epoch", "dt": 0.51344, "dt_data": 0.51344, "dt_net": 0.24276, "epoch": "76/300", "eta": "0:11:29", "gpu_mem": "5.93G", "grad_norm": 0.39847, "loss": 1.97131, "lr": 0.08505, "top1_err": 62.50000, "top5_err": 25.00000}
+[11/07 13:13:32][INFO] train_net.py:  696: Epoch 75 takes 4.20s. Epochs from 10 to 75 take 4.23s in average and 4.08s in median.
+[11/07 13:13:32][INFO] train_net.py:  702: For epoch 75, each iteraction takes 0.70s in average. From epoch 10 to 75, each iteraction takes 0.71s in average.
+[11/07 13:13:36][INFO] logging.py:   99: json_stats: {"RAM": "41.72/501.50G", "_type": "train_epoch", "dt": 0.48696, "dt_data": 0.48696, "dt_net": 0.24288, "epoch": "77/300", "eta": "0:10:51", "gpu_mem": "5.93G", "grad_norm": 0.57330, "loss": 1.93062, "lr": 0.08467, "top1_err": 62.50000, "top5_err": 25.00000}
+[11/07 13:13:36][INFO] train_net.py:  696: Epoch 76 takes 4.08s. Epochs from 10 to 76 take 4.23s in average and 4.08s in median.
+[11/07 13:13:36][INFO] train_net.py:  702: For epoch 76, each iteraction takes 0.68s in average. From epoch 10 to 76, each iteraction takes 0.70s in average.
+[11/07 13:13:40][INFO] logging.py:   99: json_stats: {"RAM": "41.68/501.50G", "_type": "train_epoch", "dt": 0.52238, "dt_data": 0.52238, "dt_net": 0.24314, "epoch": "78/300", "eta": "0:11:35", "gpu_mem": "5.93G", "grad_norm": 0.43046, "loss": 1.93274, "lr": 0.08429, "top1_err": 62.50000, "top5_err": 20.83333}
+[11/07 13:13:40][INFO] train_net.py:  696: Epoch 77 takes 4.15s. Epochs from 10 to 77 take 4.23s in average and 4.08s in median.
+[11/07 13:13:40][INFO] train_net.py:  702: For epoch 77, each iteraction takes 0.69s in average. From epoch 10 to 77, each iteraction takes 0.70s in average.
+[11/07 13:13:44][INFO] logging.py:   99: json_stats: {"RAM": "41.68/501.50G", "_type": "train_epoch", "dt": 0.52452, "dt_data": 0.52452, "dt_net": 0.24283, "epoch": "79/300", "eta": "0:11:35", "gpu_mem": "5.93G", "grad_norm": 0.79298, "loss": 1.98436, "lr": 0.08391, "top1_err": 62.50000, "top5_err": 25.00000}
+[11/07 13:13:44][INFO] train_net.py:  696: Epoch 78 takes 4.14s. Epochs from 10 to 78 take 4.23s in average and 4.08s in median.
+[11/07 13:13:44][INFO] train_net.py:  702: For epoch 78, each iteraction takes 0.69s in average. From epoch 10 to 78, each iteraction takes 0.70s in average.
+[11/07 13:13:48][INFO] logging.py:   99: json_stats: {"RAM": "41.68/501.50G", "_type": "train_epoch", "dt": 0.49779, "dt_data": 0.49779, "dt_net": 0.24350, "epoch": "80/300", "eta": "0:10:57", "gpu_mem": "5.93G", "grad_norm": 1.39173, "loss": 1.88723, "lr": 0.08352, "top1_err": 62.50000, "top5_err": 16.66667}
+[11/07 13:13:48][INFO] train_net.py:  696: Epoch 79 takes 4.08s. Epochs from 10 to 79 take 4.22s in average and 4.08s in median.
+[11/07 13:13:48][INFO] train_net.py:  702: For epoch 79, each iteraction takes 0.68s in average. From epoch 10 to 79, each iteraction takes 0.70s in average.
+[11/07 13:13:48][INFO] precise_bn.py:  129: Computing precise BN statistics for 84 BN layers ...
+[11/07 13:13:54][INFO] logging.py:   99: json_stats: {"RAM": "41.72/501.50G", "_type": "val_epoch", "epoch": "80/300", "gpu_mem": "5.93G", "min_top1_err": 73.91304, "min_top5_err": 34.78261, "time_diff": 0.37635, "top1_err": 95.65217, "top5_err": 39.13043}
+[11/07 13:13:58][INFO] logging.py:   99: json_stats: {"RAM": "41.68/501.50G", "_type": "train_epoch", "dt": 0.49612, "dt_data": 0.49612, "dt_net": 0.24328, "epoch": "81/300", "eta": "0:10:51", "gpu_mem": "5.93G", "grad_norm": 1.11504, "loss": 1.79662, "lr": 0.08313, "top1_err": 62.50000, "top5_err": 16.66667}
+[11/07 13:13:58][INFO] train_net.py:  696: Epoch 80 takes 4.06s. Epochs from 10 to 80 take 4.22s in average and 4.08s in median.
+[11/07 13:13:58][INFO] train_net.py:  702: For epoch 80, each iteraction takes 0.68s in average. From epoch 10 to 80, each iteraction takes 0.70s in average.
+[11/07 13:14:02][INFO] logging.py:   99: json_stats: {"RAM": "41.66/501.50G", "_type": "train_epoch", "dt": 0.49753, "dt_data": 0.49753, "dt_net": 0.24276, "epoch": "82/300", "eta": "0:10:50", "gpu_mem": "5.93G", "grad_norm": 0.49869, "loss": 1.93478, "lr": 0.08274, "top1_err": 70.83333, "top5_err": 20.83333}
+[11/07 13:14:02][INFO] train_net.py:  696: Epoch 81 takes 3.97s. Epochs from 10 to 81 take 4.22s in average and 4.08s in median.
+[11/07 13:14:02][INFO] train_net.py:  702: For epoch 81, each iteraction takes 0.66s in average. From epoch 10 to 81, each iteraction takes 0.70s in average.
+[11/07 13:14:06][INFO] logging.py:   99: json_stats: {"RAM": "39.96/501.50G", "_type": "train_epoch", "dt": 0.52647, "dt_data": 0.52647, "dt_net": 0.24258, "epoch": "83/300", "eta": "0:11:25", "gpu_mem": "5.93G", "grad_norm": 0.96821, "loss": 1.82488, "lr": 0.08234, "top1_err": 54.16667, "top5_err": 12.50000}
+[11/07 13:14:06][INFO] train_net.py:  696: Epoch 82 takes 4.16s. Epochs from 10 to 82 take 4.22s in average and 4.08s in median.
+[11/07 13:14:06][INFO] train_net.py:  702: For epoch 82, each iteraction takes 0.69s in average. From epoch 10 to 82, each iteraction takes 0.70s in average.
+[11/07 13:14:10][INFO] logging.py:   99: json_stats: {"RAM": "41.65/501.50G", "_type": "train_epoch", "dt": 0.53616, "dt_data": 0.53616, "dt_net": 0.24303, "epoch": "84/300", "eta": "0:11:34", "gpu_mem": "5.93G", "grad_norm": 1.68630, "loss": 1.90331, "lr": 0.08194, "top1_err": 70.83333, "top5_err": 20.83333}
+[11/07 13:14:10][INFO] train_net.py:  696: Epoch 83 takes 4.17s. Epochs from 10 to 83 take 4.22s in average and 4.08s in median.
+[11/07 13:14:10][INFO] train_net.py:  702: For epoch 83, each iteraction takes 0.69s in average. From epoch 10 to 83, each iteraction takes 0.70s in average.
+[11/07 13:14:14][INFO] logging.py:   99: json_stats: {"RAM": "41.66/501.50G", "_type": "train_epoch", "dt": 0.49575, "dt_data": 0.49575, "dt_net": 0.24229, "epoch": "85/300", "eta": "0:10:39", "gpu_mem": "5.93G", "grad_norm": 0.65715, "loss": 1.81330, "lr": 0.08153, "top1_err": 62.50000, "top5_err": 25.00000}
+[11/07 13:14:14][INFO] train_net.py:  696: Epoch 84 takes 4.11s. Epochs from 10 to 84 take 4.22s in average and 4.08s in median.
+[11/07 13:14:14][INFO] train_net.py:  702: For epoch 84, each iteraction takes 0.69s in average. From epoch 10 to 84, each iteraction takes 0.70s in average.
+[11/07 13:14:18][INFO] logging.py:   99: json_stats: {"RAM": "41.68/501.50G", "_type": "train_epoch", "dt": 0.50188, "dt_data": 0.50188, "dt_net": 0.24349, "epoch": "86/300", "eta": "0:10:44", "gpu_mem": "5.93G", "grad_norm": 0.70723, "loss": 1.99702, "lr": 0.08113, "top1_err": 66.66667, "top5_err": 29.16667}
+[11/07 13:14:18][INFO] train_net.py:  696: Epoch 85 takes 4.09s. Epochs from 10 to 85 take 4.21s in average and 4.08s in median.
+[11/07 13:14:18][INFO] train_net.py:  702: For epoch 85, each iteraction takes 0.68s in average. From epoch 10 to 85, each iteraction takes 0.70s in average.
+[11/07 13:14:22][INFO] logging.py:   99: json_stats: {"RAM": "41.67/501.50G", "_type": "train_epoch", "dt": 0.49677, "dt_data": 0.49677, "dt_net": 0.24311, "epoch": "87/300", "eta": "0:10:34", "gpu_mem": "5.93G", "grad_norm": 0.54787, "loss": 1.97693, "lr": 0.08071, "top1_err": 62.50000, "top5_err": 20.83333}
+[11/07 13:14:22][INFO] train_net.py:  696: Epoch 86 takes 4.01s. Epochs from 10 to 86 take 4.21s in average and 4.08s in median.
+[11/07 13:14:22][INFO] train_net.py:  702: For epoch 86, each iteraction takes 0.67s in average. From epoch 10 to 86, each iteraction takes 0.70s in average.
+[11/07 13:14:26][INFO] logging.py:   99: json_stats: {"RAM": "41.67/501.50G", "_type": "train_epoch", "dt": 0.50088, "dt_data": 0.50088, "dt_net": 0.24301, "epoch": "88/300", "eta": "0:10:37", "gpu_mem": "5.93G", "grad_norm": 0.54720, "loss": 1.94864, "lr": 0.08030, "top1_err": 62.50000, "top5_err": 25.00000}
+[11/07 13:14:26][INFO] train_net.py:  696: Epoch 87 takes 4.06s. Epochs from 10 to 87 take 4.21s in average and 4.08s in median.
+[11/07 13:14:26][INFO] train_net.py:  702: For epoch 87, each iteraction takes 0.68s in average. From epoch 10 to 87, each iteraction takes 0.70s in average.
+[11/07 13:14:31][INFO] logging.py:   99: json_stats: {"RAM": "41.67/501.50G", "_type": "train_epoch", "dt": 0.52706, "dt_data": 0.52706, "dt_net": 0.24309, "epoch": "89/300", "eta": "0:11:07", "gpu_mem": "5.93G", "grad_norm": 0.43586, "loss": 1.94524, "lr": 0.07988, "top1_err": 62.50000, "top5_err": 20.83333}
+[11/07 13:14:31][INFO] train_net.py:  696: Epoch 88 takes 4.07s. Epochs from 10 to 88 take 4.21s in average and 4.08s in median.
+[11/07 13:14:31][INFO] train_net.py:  702: For epoch 88, each iteraction takes 0.68s in average. From epoch 10 to 88, each iteraction takes 0.70s in average.
+[11/07 13:14:35][INFO] logging.py:   99: json_stats: {"RAM": "41.68/501.50G", "_type": "train_epoch", "dt": 0.49032, "dt_data": 0.49032, "dt_net": 0.24259, "epoch": "90/300", "eta": "0:10:17", "gpu_mem": "5.93G", "grad_norm": 1.67098, "loss": 1.93293, "lr": 0.07946, "top1_err": 62.50000, "top5_err": 16.66667}
+[11/07 13:14:35][INFO] train_net.py:  696: Epoch 89 takes 4.04s. Epochs from 10 to 89 take 4.21s in average and 4.08s in median.
+[11/07 13:14:35][INFO] train_net.py:  702: For epoch 89, each iteraction takes 0.67s in average. From epoch 10 to 89, each iteraction takes 0.70s in average.
+[11/07 13:14:35][INFO] precise_bn.py:  129: Computing precise BN statistics for 84 BN layers ...

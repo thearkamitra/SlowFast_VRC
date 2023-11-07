@@ -249,7 +249,7 @@ class Kinetics(torch.utils.data.Dataset):
             data[idx, :, :, 2] = image[:, :, 2] / 255*scale + add
         
         #transform data dimension from (frames, height, width, channels) to (channels, frames, height, width)
-        data = np.transpose(data, (3, 0, 1, 2))
+        data = torch.tensor(np.transpose(data, (3, 0, 1, 2))).float()
         frames = utils.pack_pathway_output(self.cfg, data)
         # frames = [slow_data, data]
         return frames, label, index, 0, {}

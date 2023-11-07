@@ -120,6 +120,7 @@ def train_epoch(
             perform_backward = True
             optimizer.zero_grad()
 
+            inputs = [x.float() for x in inputs]
             if cfg.MODEL.MODEL_NAME == "ContrastiveModel":
                 (
                     model,
@@ -136,7 +137,6 @@ def train_epoch(
                 preds, labels = model(inputs)
             else:
                 # breakpoint()
-                inputs = [x.float() for x in inputs]
                 preds = model(inputs)
             if cfg.TASK == "ssl" and cfg.MODEL.MODEL_NAME == "ContrastiveModel":
                 labels = torch.zeros(
@@ -315,6 +315,8 @@ def eval_epoch(
             else:
                 inputs = inputs.cuda(non_blocking=True)
             labels = labels.cuda()
+            
+            inputs = [x.float() for x in inputs]
             for key, val in meta.items():
                 if isinstance(val, (list,)):
                     for i in range(len(val)):

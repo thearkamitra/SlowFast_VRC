@@ -68,6 +68,7 @@ def perform_test(test_loader, model, test_meter, cfg, writer=None):
                     meta[key] = val.cuda(non_blocking=True)
         test_meter.data_toc()
 
+        inputs = [x.float() for x in inputs]
         if cfg.DETECTION.ENABLE:
             # Compute the predictions.
             preds = model(inputs, meta["boxes"])

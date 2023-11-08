@@ -267,6 +267,7 @@ lazy_loader==0.2
 libclang==14.0.1
 libpysal==4.6.2
 lightning-utilities==0.6.0.post0
+lit==17.0.4
 llvmlite==0.38.1
 locket==1.0.0
 loguru==0.6.0
@@ -332,10 +333,17 @@ numpy-groupies==0.9.16
 numpy-quaternion==2022.4.2
 numpy-stl==3.0.1
 nvidia-cublas-cu11==11.10.3.66
+nvidia-cuda-cupti-cu11==11.7.101
 nvidia-cuda-nvrtc-cu11==11.7.99
 nvidia-cuda-runtime-cu11==11.7.99
 nvidia-cudnn-cu11==8.5.0.96
+nvidia-cufft-cu11==10.9.0.58
+nvidia-curand-cu11==10.2.10.91
+nvidia-cusolver-cu11==11.4.0.1
+nvidia-cusparse-cu11==11.7.4.91
 nvidia-ml-py3==7.352.0
+nvidia-nccl-cu11==2.14.3
+nvidia-nvtx-cu11==11.7.91
 oauthlib==3.2.0
 omegaconf==2.3.0
 open3d-python==0.3.0.0
@@ -400,7 +408,7 @@ prettytable==3.3.0
 prometheus-client==0.14.1
 promise==2.3
 prompt-toolkit==3.0.29
-protobuf==3.19.4
+protobuf==3.9.2
 psutil==5.9.5
 ptyprocess==0.7.0
 PuLP==2.6.0
@@ -548,7 +556,6 @@ shortuuid==1.0.9
 simplegeneric==0.8.1
 simplejson==3.17.6
 six==1.16.0
-slowfast==1.0
 smart-open==6.0.0
 smmap==5.0.0
 smmap2==3.0.1
@@ -637,6 +644,7 @@ traitsui==7.3.1
 transaction==3.0.1
 transformers==4.19.2
 trimesh==3.12.5
+triton==2.0.0
 twine==4.0.1
 typing_extensions==4.2.0
 urllib3==1.26.9

@@ -10,6 +10,7 @@
 #SBATCH --mail-user=amitra@ethz.ch
 
 source /cluster/apps/local/env2lmod.sh  # Switch to the new software stack
+module load gcc/8.2.0 python/3.10.4 cuda/11.6.2 eth_proxy cudnn/8.0.5 
 cd /cluster/project/cvl/amitra/SlowFast_VRC            # Change directory
 echo "Starting to activate virtual environment"
 source /cluster/project/cvl/amitra/SlowFast_VRC/vrc/bin/activate # Activate virtual environment               

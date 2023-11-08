@@ -15,4 +15,4 @@ echo "Starting to activate virtual environment"
 source /cluster/project/cvl/amitra/SlowFast_VRC/vrc/bin/activate # Activate virtual environment               
 export PYTHONPATH=.   
 echo "Activated virtual environment"
-python tools/run_net.py --cfg configs/VRC/X3D_L.yaml # Execute the program
+python tools/run_net.py --cfg "$@" #write the name of the config each time # Execute the program

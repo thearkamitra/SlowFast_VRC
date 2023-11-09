@@ -1,5 +1,5 @@
 TRAIN:
-  ENABLE: True # default True
+  ENABLE: False # default True
   DATASET: kinetics
   BATCH_SIZE: 4
   EVAL_PERIOD: 10
@@ -12,9 +12,10 @@ X3D:
   DIM_C5: 2048
   DIM_C1: 12
 TEST:
-  ENABLE: False
+  ENABLE: True
   DATASET: kinetics
   BATCH_SIZE: 4
+  NUM_ENSEMBLE_VIEWS: 1
   # CHECKPOINT_FILE_PATH: 'x3d_s.pyth' # 73.50% top1 30-view accuracy to download from the model zoo (optional).
   # NUM_SPATIAL_CROPS: 1
   NUM_SPATIAL_CROPS: 1

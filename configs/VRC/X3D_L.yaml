@@ -15,6 +15,7 @@ TEST:
   ENABLE: False
   DATASET: kinetics
   BATCH_SIZE: 32
+  NUM_ENSEMBLE_VIEWS: 1
   # CHECKPOINT_FILE_PATH: 'x3d_l.pyth' # 77.48% top1 30-view accuracy to download from the model zoo (optional).
   # NUM_SPATIAL_CROPS: 1
   NUM_SPATIAL_CROPS: 1

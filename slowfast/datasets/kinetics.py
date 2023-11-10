@@ -73,6 +73,9 @@ class Kinetics(torch.utils.data.Dataset):
         
         self.IMAGE_HEIGHT= 90*3
         self.IMAGE_WIDTH= 120*3
+        if self.cfg.OUTPUT_DIR == "checkpoints_X3D_XS":
+                self.IMAGE_HEIGHT= 90
+                self.IMAGE_WIDTH= 120
         self.NUM_FRAMES= self.cfg.DATA.NUM_FRAMES
         self.CHANNELS= 3
         self.normalize = True
@@ -161,6 +164,17 @@ class Kinetics(torch.utils.data.Dataset):
                 )
                 path = fetch_info[0]
                 label = fetch_info[-1]
+                if "CKG" in path and not self.cfg.DATASET_TYPE.CKG:
+                    continue
+                if "CKF" in path and not self.cfg.DATASET_TYPE.CKF:
+                    continue
+                if "TST" in path and not self.cfg.DATASET_TYPE.TST:
+                    continue
+                if "SYN" in path:
+                    if self.all_hardness.get(path)=="easy" and not self.cfg.DATASET_TYPE.SYN_EASY:
+                        continue
+                    if self.all_hardness.get(path)=="hard" and not self.cfg.DATASET_TYPE.SYN_HARD:
+                        continue
                 for idx in range(self._num_clips):
                     self._path_to_videos.append(
                         os.path.join(self.cfg.DATA.PATH_TO_DATA_DIR, path)

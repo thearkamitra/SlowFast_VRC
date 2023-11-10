@@ -1,7 +1,7 @@
 TRAIN:
   ENABLE: True # default True
   DATASET: kinetics
-  BATCH_SIZE: 4
+  BATCH_SIZE: 128
   EVAL_PERIOD: 10
   CHECKPOINT_PERIOD: 10
   AUTO_RESUME: False
@@ -14,7 +14,7 @@ X3D:
 TEST:
   ENABLE: True
   DATASET: kinetics
-  BATCH_SIZE: 4
+  BATCH_SIZE: 32
   NUM_ENSEMBLE_VIEWS: 1
   # CHECKPOINT_FILE_PATH: 'x3d_xs.pyth' # 69.46% top1 30-view accuracy to download from the model zoo (optional).
   # NUM_SPATIAL_CROPS: 1
@@ -25,7 +25,7 @@ DATA:
   TRAIN_JITTER_SCALES: [182, 228]
   TRAIN_CROP_SIZE: 90
   # TEST_CROP_SIZE: 160 # use if TEST.NUM_SPATIAL_CROPS: 1
-  TEST_CROP_SIZE: 120 # use if TEST.NUM_SPATIAL_CROPS: 3
+  TEST_CROP_SIZE: 90 # use if TEST.NUM_SPATIAL_CROPS: 3
   INPUT_CHANNEL_NUM: [3]
   DECODING_BACKEND: torchvision
   PATH_TO_DATA_DIR: /cluster/work/cvl/robocup/data/Debug_Dataset

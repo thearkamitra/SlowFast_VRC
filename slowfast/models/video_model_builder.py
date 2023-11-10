@@ -1190,8 +1190,10 @@ class MViT(nn.Module):
         return x
 
     def forward(self, x, bboxes=None, return_attn=False):
-        x = x[0]
-        x, bcthw = self.patch_embed(x)
+        y = x[0]
+        if y.shape[0]!=1:
+            y = y.expand(1, *y.shape)
+        x, bcthw = self.patch_embed(y)
         bcthw = list(bcthw)
         if len(bcthw) == 4:  # Fix bcthw in case of 4D tensor
             bcthw.insert(2, torch.tensor(self.T))
@@ -1204,15 +1206,12 @@ class MViT(nn.Module):
             x += self.pos_embed[:, s:, :]  # s: on/off cls token
 
         if self.cls_embed_on:
-            try:
-                cls_tokens = self.cls_token.expand(
-                    B, -1, -1
-                )  # stole cls_tokens impl from Phil Wang, thanks
-                if self.use_fixed_sincos_pos:
-                    cls_tokens = cls_tokens + self.pos_embed[:, :s, :]
-                x = torch.cat((cls_tokens, x), dim=1)
-            except:
-                breakpoint
+            cls_tokens = self.cls_token.expand(
+                B, -1, -1
+            )  # stole cls_tokens impl from Phil Wang, thanks
+            if self.use_fixed_sincos_pos:
+                cls_tokens = cls_tokens + self.pos_embed[:, :s, :]
+            x = torch.cat((cls_tokens, x), dim=1)
         if self.use_abs_pos:
             if self.sep_pos_embed:
                 pos_embed = self.pos_embed_spatial.repeat(

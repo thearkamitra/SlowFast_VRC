@@ -542,7 +542,7 @@ class MultiScaleBlock(nn.Module):
             else None
         )
 
-    def forward(self, x, thw_shape=None):
+    def forward(self, x, thw_shape=None):    
         x_norm = self.norm1(x)
         x_block, thw_shape_new = self.attn(x_norm, thw_shape)
         if self.dim_mul_in_att and self.dim != self.dim_out:

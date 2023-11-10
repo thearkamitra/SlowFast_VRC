@@ -82,7 +82,6 @@ class Kinetics(torch.utils.data.Dataset):
         if self.cfg.MODEL.ARCH == "mvit":
             self.IMAGE_HEIGHT = 224
             self.IMAGE_WIDTH = 224
-        
         self.p_convert_gray = self.cfg.DATA.COLOR_RND_GRAYSCALE
         self.p_convert_dt = self.cfg.DATA.TIME_DIFF_PROB
         self._video_meta = {}
@@ -218,35 +217,37 @@ class Kinetics(torch.utils.data.Dataset):
         else:
             alpha, beta = 1, 0
         for idx in range(self.NUM_FRAMES): # take frames starting from the beginning (even if less frames needed)
-            image_path = os.path.join(folder_path, imgs[idx])
-            image = cv2.imread(image_path).astype(np.float32) # idx counts from 0 upwards
-            image = cv2.resize(image, (self.IMAGE_WIDTH, self.IMAGE_HEIGHT))
-
-            if flip:
-                image = cv2.flip(image, 1)
-
-            if self.augment:
-                # small random changes in contrast and brightness
-                alpha += np.random.uniform(-0.05,0.05)
-                beta += np.random.uniform(-2,2)
-
-                # random crop (not too small so don't cut of referee)
-                crop_ratio = np.random.uniform(0.9, 0.99)
-                crop_width = int(crop_ratio * self.IMAGE_WIDTH)
-                crop_height = int(crop_ratio * self.IMAGE_HEIGHT)
-                x = np.random.randint(0, self.IMAGE_WIDTH - crop_width)
-                y = np.random.randint(0, self.IMAGE_HEIGHT - crop_height)
-                image = image[y:y+crop_height, x:x+crop_width]
+            try:
+                image_path = os.path.join(folder_path, imgs[idx])
+                image = cv2.imread(image_path).astype(np.float32) # idx counts from 0 upwards
                 image = cv2.resize(image, (self.IMAGE_WIDTH, self.IMAGE_HEIGHT))
 
-            image = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
-            if self.normalize:
-                scale  = 2
-                add = -1
-            else:
-                scale = 1
-                add = 0
+                if flip:
+                    image = cv2.flip(image, 1)
 
+                if self.augment:
+                    # small random changes in contrast and brightness
+                    alpha += np.random.uniform(-0.05,0.05)
+                    beta += np.random.uniform(-2,2)
+
+                    # random crop (not too small so don't cut of referee)
+                    crop_ratio = np.random.uniform(0.9, 0.99)
+                    crop_width = int(crop_ratio * self.IMAGE_WIDTH)
+                    crop_height = int(crop_ratio * self.IMAGE_HEIGHT)
+                    x = np.random.randint(0, self.IMAGE_WIDTH - crop_width)
+                    y = np.random.randint(0, self.IMAGE_HEIGHT - crop_height)
+                    image = image[y:y+crop_height, x:x+crop_width]
+                    image = cv2.resize(image, (self.IMAGE_WIDTH, self.IMAGE_HEIGHT))
+
+                image = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
+                if self.normalize:
+                    scale  = 2
+                    add = -1
+                else:
+                    scale = 1
+                    add = 0
+            except:
+                continue
             data[idx, :, :, 0] = image[:, :, 0] / 255*scale + add
             data[idx, :, :, 1] = image[:, :, 1] / 255*scale + add
             data[idx, :, :, 2] = image[:, :, 2] / 255*scale + add

@@ -10,10 +10,13 @@
 #SBATCH --mail-user=amitra@ethz.ch
 
 source /cluster/apps/local/env2lmod.sh  # Switch to the new software stack
-module load gcc/8.2.0 python/3.10.4 cuda/11.6.2 eth_proxy cudnn/8.0.5 
+module load gcc/8.2.0 python/3.10.4 cuda/11.6.2 eth_proxy cudnn/8.0.5 pigz
 cd /cluster/project/cvl/amitra/SlowFast_VRC            # Change directory
 echo "Starting to activate virtual environment"
 source /cluster/project/cvl/amitra/SlowFast_VRC/vrc/bin/activate # Activate virtual environment               
 export PYTHONPATH=.   
 echo "Activated virtual environment"
+tar -I pigz -xvf /cluster/work/cvl/robocup/data/Final_Dataset.tar.gz -C ${TMPDIR}/
+echo "untar dataset done, and remember to set the dataset reading path"
+## datapath = os.path.join(os.getenv('TMPDIR'),"Full_Dataset")
 python tools/run_net.py --cfg "$@" #write the name of the config each time # Execute the program

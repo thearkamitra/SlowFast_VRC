@@ -10,7 +10,7 @@ from demo_net import demo
 from test_net import test
 from train_net import train
 from visualization import visualize
-
+import os
 
 def main():
     """
@@ -21,7 +21,8 @@ def main():
     for path_to_config in args.cfg_files:
         cfg = load_config(args, path_to_config)
         cfg = assert_and_infer_cfg(cfg)
-
+        ## Change for other users. TODO:: Make this a command line argument
+        cfg.DATA.PATH_TO_DATA_DIR = os.path.join('/cluster/scratch/amitra',"Full_Dataset")
         # Perform training.
         if cfg.TRAIN.ENABLE:
             launch_job(cfg=cfg, init_method=args.init_method, func=train)

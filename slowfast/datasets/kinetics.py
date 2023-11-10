@@ -123,13 +123,15 @@ class Kinetics(torch.utils.data.Dataset):
         Construct the video loader.
         """
         path_to_file = os.path.join(
-            self.cfg.DATA.PATH_TO_DATA_DIR, "small_{}.csv".format(self.mode)
+            self.cfg.DATA.PATH_TO_DATA_DIR, "{}.csv".format(self.mode)
         )
         assert pathmgr.exists(path_to_file), "{} dir not found".format(
             path_to_file
         )
         self._path_to_videos = []
         self._labels = []
+        self.all_hardness = {}
+        self._hardness = []
         self._spatial_temporal_idx = []
         self.cur_iter = 0
         self.chunk_epoch = 0
@@ -138,11 +140,21 @@ class Kinetics(torch.utils.data.Dataset):
 
         # self._path_to_videos = np.random.permutation(open(path_to_file).readlines())
 
+        path_to_meta_file = os.path.join(
+            self.cfg.DATA.PATH_TO_DATA_DIR, "meta.csv".format(self.mode)
+        )
+        with pathmgr.open(path_to_meta_file, "r") as f:
+            meta_data = f.read().splitlines()
+        for option in meta_data:
+            name, method = option.split(";")
+            self.all_hardness[name] = method
+            
         with pathmgr.open(path_to_file, "r") as f:
             if self.use_chunk_loading:
                 rows = self._get_chunk(f, self.cfg.DATA.LOADER_CHUNK_SIZE)
             else:
                 rows = f.read().splitlines()
+                
             for clip_idx, path_label in enumerate(rows):
                 fetch_info = path_label.split(
                     self.cfg.DATA.PATH_LABEL_SEPARATOR
@@ -156,6 +168,11 @@ class Kinetics(torch.utils.data.Dataset):
                     self._labels.append(int(label))
                     self._spatial_temporal_idx.append(idx)
                     self._video_meta[clip_idx * self._num_clips + idx] = {}
+                    if self.all_hardness.get(path)=="hard":
+                        self._hardness.append(1)
+                    else:
+                        self._hardness.append(0)
+                        
         assert (
             len(self._path_to_videos) > 0
         ), "Failed to load VRC split {} from {}".format(
@@ -166,6 +183,8 @@ class Kinetics(torch.utils.data.Dataset):
                 len(self._path_to_videos), self.skip_rows, path_to_file
             )
         )
+        
+        
     
     def flip_label(self, label):
         if label not in range(13):

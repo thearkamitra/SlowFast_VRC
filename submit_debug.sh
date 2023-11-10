@@ -16,7 +16,4 @@ echo "Starting to activate virtual environment"
 source /cluster/project/cvl/amitra/SlowFast_VRC/vrc/bin/activate # Activate virtual environment               
 export PYTHONPATH=.   
 echo "Activated virtual environment"
-tar -I pigz -xvf /cluster/work/cvl/robocup/data/Final_Dataset.tar.gz -C ${TMPDIR}/
-echo "untar dataset done, and remember to set the dataset reading path"
-## datapath = os.path.join(os.getenv('TMPDIR'),"Full_Dataset")
 python tools/run_net.py --cfg "$@" #write the name of the config each time # Execute the program

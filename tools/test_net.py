@@ -45,7 +45,7 @@ def perform_test(test_loader, model, test_meter, cfg, writer=None):
     # Enable eval mode.
     model.eval()
     test_meter.iter_tic()
-
+    test_meter.all_hardness = test_loader.dataset._hardness
     for cur_iter, (inputs, labels, video_idx, time, meta) in enumerate(
         test_loader
     ):
@@ -58,7 +58,11 @@ def perform_test(test_loader, model, test_meter, cfg, writer=None):
             else:
                 inputs = inputs.cuda(non_blocking=True)
             # Transfer the data to the current GPU device.
+            if isinstance(labels, list):
+                labels = torch.tensor(labels)
             labels = labels.cuda()
+            if isinstance(video_idx, list):
+                video_idx = torch.tensor(video_idx)
             video_idx = video_idx.cuda()
             for key, val in meta.items():
                 if isinstance(val, (list,)):
@@ -142,6 +146,7 @@ def perform_test(test_loader, model, test_meter, cfg, writer=None):
     if not cfg.DETECTION.ENABLE:
         all_preds = test_meter.video_preds.clone().detach()
         all_labels = test_meter.video_labels
+        
         if cfg.NUM_GPUS:
             all_preds = all_preds.cpu()
             all_labels = all_labels.cpu()

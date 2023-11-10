@@ -73,13 +73,16 @@ class Kinetics(torch.utils.data.Dataset):
         
         self.IMAGE_HEIGHT= 90*3
         self.IMAGE_WIDTH= 120*3
-        self.NUM_FRAMES= 15
+        self.NUM_FRAMES= self.cfg.DATA.NUM_FRAMES
         self.CHANNELS= 3
         self.normalize = True
         self.use_position = False  
         self.use_newer_model = False  
         self.num_classes = 13
-
+        if self.cfg.MODEL.ARCH == "mvit":
+            self.IMAGE_HEIGHT = 224
+            self.IMAGE_WIDTH = 224
+        
         self.p_convert_gray = self.cfg.DATA.COLOR_RND_GRAYSCALE
         self.p_convert_dt = self.cfg.DATA.TIME_DIFF_PROB
         self._video_meta = {}
@@ -249,10 +252,17 @@ class Kinetics(torch.utils.data.Dataset):
             data[idx, :, :, 2] = image[:, :, 2] / 255*scale + add
         
         #transform data dimension from (frames, height, width, channels) to (channels, frames, height, width)
-        data = torch.tensor(np.transpose(data, (3, 0, 1, 2))).float()
+        if self.cfg.MODEL.ARCH != "mvit":
+            data = torch.tensor(np.transpose(data, (3, 0, 1, 2))).float()
+        else:
+            data = torch.tensor(np.transpose(data, (3, 0, 1, 2))).float()
         frames = utils.pack_pathway_output(self.cfg, data)
-        # frames = [slow_data, data]
-        return frames, label, index, 0, {}
+        time = 0
+        if self.cfg.MODEL.ARCH == "mvit":
+            label = [label]
+            index = [index]
+            time = [time]
+        return frames, label, index, time, {}
         # How the return should look like:
         return frames, label, index, time_idx, {}
 

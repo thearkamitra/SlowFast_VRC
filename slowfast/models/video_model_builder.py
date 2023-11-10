@@ -835,7 +835,10 @@ class MViT(nn.Module):
         self.patch_stride = cfg.MVIT.PATCH_STRIDE
         if self.use_2d_patch:
             self.patch_stride = [1] + self.patch_stride
-        self.T = cfg.DATA.NUM_FRAMES // self.patch_stride[0]
+        if cfg.DATA.NUM_FRAMES% self.patch_stride[0]:
+            self.T = cfg.DATA.NUM_FRAMES // self.patch_stride[0] + 1
+        else:
+            self.T = cfg.DATA.NUM_FRAMES // self.patch_stride[0]
         self.H = cfg.DATA.TRAIN_CROP_SIZE // self.patch_stride[1]
         self.W = cfg.DATA.TRAIN_CROP_SIZE // self.patch_stride[2]
         # Prepare output.
@@ -1201,13 +1204,15 @@ class MViT(nn.Module):
             x += self.pos_embed[:, s:, :]  # s: on/off cls token
 
         if self.cls_embed_on:
-            cls_tokens = self.cls_token.expand(
-                B, -1, -1
-            )  # stole cls_tokens impl from Phil Wang, thanks
-            if self.use_fixed_sincos_pos:
-                cls_tokens = cls_tokens + self.pos_embed[:, :s, :]
-            x = torch.cat((cls_tokens, x), dim=1)
-
+            try:
+                cls_tokens = self.cls_token.expand(
+                    B, -1, -1
+                )  # stole cls_tokens impl from Phil Wang, thanks
+                if self.use_fixed_sincos_pos:
+                    cls_tokens = cls_tokens + self.pos_embed[:, :s, :]
+                x = torch.cat((cls_tokens, x), dim=1)
+            except:
+                breakpoint
         if self.use_abs_pos:
             if self.sep_pos_embed:
                 pos_embed = self.pos_embed_spatial.repeat(

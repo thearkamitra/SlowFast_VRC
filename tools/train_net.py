@@ -136,7 +136,6 @@ def train_epoch(
             elif cfg.MASK.ENABLE:
                 preds, labels = model(inputs)
             else:
-                # breakpoint()
                 preds = model(inputs)
             if cfg.TASK == "ssl" and cfg.MODEL.MODEL_NAME == "ContrastiveModel":
                 labels = torch.zeros(

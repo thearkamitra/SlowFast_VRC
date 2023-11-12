@@ -1191,8 +1191,9 @@ class MViT(nn.Module):
 
     def forward(self, x, bboxes=None, return_attn=False):
         y = x[0]
-        if y.shape[0]!=1:
-            y = y.expand(1, *y.shape)
+        if len(y.shape) != 5:
+            if y.shape[0]!=1:
+                y = y.expand(1, *y.shape)
         x, bcthw = self.patch_embed(y)
         bcthw = list(bcthw)
         if len(bcthw) == 4:  # Fix bcthw in case of 4D tensor

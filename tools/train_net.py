@@ -98,7 +98,6 @@ def train_epoch(
                         val[i] = val[i].cuda(non_blocking=True)
                 else:
                     meta[key] = val.cuda(non_blocking=True)
-
         batch_size = (
             inputs[0][0].size(0)
             if isinstance(inputs[0], list)
@@ -113,13 +112,11 @@ def train_epoch(
         if cfg.MIXUP.ENABLE:
             samples, labels = mixup_fn(inputs[0], labels)
             inputs[0] = samples
-
         with torch.cuda.amp.autocast(enabled=cfg.TRAIN.MIXED_PRECISION):
 
             # Explicitly declare reduction to mean.
             perform_backward = True
             optimizer.zero_grad()
-
             inputs = [x.float() for x in inputs]
             if cfg.MODEL.MODEL_NAME == "ContrastiveModel":
                 (

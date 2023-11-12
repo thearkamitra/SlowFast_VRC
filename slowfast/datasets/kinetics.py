@@ -293,6 +293,7 @@ class Kinetics(torch.utils.data.Dataset):
         frames = utils.pack_pathway_output(self.cfg, data)
         time = 0
         if self.cfg.MODEL.ARCH == "mvit":
+            frames = [frames]
             label = [label]
             index = [index]
             time = [time]

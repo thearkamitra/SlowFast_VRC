@@ -151,7 +151,7 @@ def train_epoch(
 
         if cur_iter%100 == 0:
             logger.info(f"cur_iter {cur_iter} epoch {cur_epoch} loss {loss}")
-            logger.info(f"labels {labels} preds {preds}") 
+            logger.info(f"labels {labels} preds {torch.argmax(preds, dim=1)}")
         # check Nan Loss.
         misc.check_nan_losses(loss)
         if perform_backward:

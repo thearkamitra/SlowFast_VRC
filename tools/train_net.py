@@ -149,6 +149,9 @@ def train_epoch(
         if isinstance(loss, (list, tuple)):
             loss, loss_extra = loss
 
+        if cur_iter%100 == 0:
+            logger.info(f"cur_iter {cur_iter} epoch {cur_epoch} loss {loss}")
+            logger.info(f"labels {labels} preds {preds}") 
         # check Nan Loss.
         misc.check_nan_losses(loss)
         if perform_backward:

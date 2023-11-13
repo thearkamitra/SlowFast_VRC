@@ -426,7 +426,7 @@ class TestMeter:
     
         
     def get_gesture_accuracy(self, labels, preds):
-        mapping = {0:0, 1:1, 2:1, 3:2,4:2, 5:3, 6:3, 7:4, 8:4, 9:5, 10:5, 11:6, 12:6}
+        mapping = {0:0, 1:1, 2:1, 3:2,4:2, 5:3, 6:3, 7:4, 8:4, 9:5, 10:5, 11:6, 12:7}
         new_labels = [mapping[x] for x in labels]
         new_preds = [mapping[x] for x in preds]
         return round(100 * accuracy_score(new_labels, new_preds), 2)

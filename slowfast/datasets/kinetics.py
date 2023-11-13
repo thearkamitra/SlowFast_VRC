@@ -73,7 +73,7 @@ class Kinetics(torch.utils.data.Dataset):
         
         self.IMAGE_HEIGHT= 90*3
         self.IMAGE_WIDTH= 120*3
-        if self.cfg.OUTPUT_DIR == "checkpoints_X3D_XS":
+        if "checkpoints_X3D_XS" in self.cfg.OUTPUT_DIR :
                 self.IMAGE_HEIGHT= 90
                 self.IMAGE_WIDTH= 120
         self.NUM_FRAMES= self.cfg.DATA.NUM_FRAMES
@@ -157,7 +157,6 @@ class Kinetics(torch.utils.data.Dataset):
                 rows = self._get_chunk(f, self.cfg.DATA.LOADER_CHUNK_SIZE)
             else:
                 rows = f.read().splitlines()
-            rows = rows[:16]
             for clip_idx, path_label in enumerate(rows):
                 fetch_info = path_label.split(
                     self.cfg.DATA.PATH_LABEL_SEPARATOR

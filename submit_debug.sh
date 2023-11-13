@@ -3,6 +3,7 @@
 #SBATCH -G 1
 #SBATCH --gres=gpumem:20g
 #SBATCH --time=11:58:00
+#SBATCH --mem-per-cpu=4G
 #SBATCH --output=sbatch_log/%j.out
 #SBATCH --error=sbatch_err/%j.out
 #SBATCH --mail-type=END,FAIL,BEGIN

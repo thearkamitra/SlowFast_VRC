@@ -1,7 +1,7 @@
 TRAIN:
   ENABLE: True # default True
   DATASET: kinetics
-  BATCH_SIZE: 4
+  BATCH_SIZE: 128
   EVAL_PERIOD: 10
   CHECKPOINT_PERIOD: 10
   AUTO_RESUME: False
@@ -58,6 +58,6 @@ DATA_LOADER:
   PIN_MEMORY: True
 NUM_GPUS: 1
 RNG_SEED: 0
-OUTPUT_DIR: checkpoints_X3D_XS_0.005
+OUTPUT_DIR: checkpoints_X3D_XS_0.005_fixed
 TENSORBOARD:
   ENABLE: True

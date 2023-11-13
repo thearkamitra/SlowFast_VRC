@@ -61,6 +61,7 @@ def perform_test(test_loader, model, test_meter, cfg, writer=None):
             if isinstance(labels, list):
                 labels = torch.tensor(labels)
             labels = labels.cuda()
+            
             if isinstance(video_idx, list):
                 video_idx = torch.tensor(video_idx)
             video_idx = video_idx.cuda()
@@ -123,6 +124,11 @@ def perform_test(test_loader, model, test_meter, cfg, writer=None):
         else:
             # Perform the forward pass.
             preds = model(inputs)
+        ### Convert the model to onnx and then to tensorflowlite
+        ## Lukas - 2021-05-11
+        # breakpoint()
+        # torch.onnx.export(model, inputs, "model.onnx", verbose=True)
+
         # Gather all the predictions across all the devices to perform ensemble.
         if cfg.NUM_GPUS > 1:
             preds, labels, video_idx = du.all_gather([preds, labels, video_idx])

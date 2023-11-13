@@ -1,5 +1,5 @@
 TRAIN:
-  ENABLE: True # default True
+  ENABLE: False # default True
   DATASET: kinetics
   BATCH_SIZE: 128
   EVAL_PERIOD: 10
@@ -14,7 +14,7 @@ X3D:
 TEST:
   ENABLE: True
   DATASET: kinetics
-  BATCH_SIZE: 32
+  BATCH_SIZE: 1
   NUM_ENSEMBLE_VIEWS: 1
   # CHECKPOINT_FILE_PATH: 'x3d_xs.pyth' # 69.46% top1 30-view accuracy to download from the model zoo (optional).
   # NUM_SPATIAL_CROPS: 1
@@ -56,7 +56,7 @@ MODEL:
 DATA_LOADER:
   NUM_WORKERS: 8
   PIN_MEMORY: True
-NUM_GPUS: 1
+NUM_GPUS: 0
 RNG_SEED: 0
 OUTPUT_DIR: checkpoints_X3D_XS_0.005_fixed
 TENSORBOARD:

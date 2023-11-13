@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -n 16
+#SBATCH -n 8
 #SBATCH -G 1
 #SBATCH --gres=gpumem:20g
 #SBATCH --time=11:58:00

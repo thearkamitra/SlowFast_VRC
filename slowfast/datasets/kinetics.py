@@ -249,41 +249,41 @@ class Kinetics(torch.utils.data.Dataset):
         else:
             alpha, beta = 1, 0
         for idx in range(self.NUM_FRAMES): # take frames starting from the beginning (even if less frames needed)
-            try:
+            if len(imgs) <= idx:
+                # if we are out of frames, take the last frame
+                image_path = os.path.join(folder_path, imgs[-1])
+            else:
                 image_path = os.path.join(folder_path, imgs[idx])
-                image = cv2.imread(image_path).astype(np.float32) # idx counts from 0 upwards
+            image = cv2.imread(image_path).astype(np.float32) # idx counts from 0 upwards
+            image = cv2.resize(image, (self.IMAGE_WIDTH, self.IMAGE_HEIGHT))
+
+            if flip:
+                image = cv2.flip(image, 1)
+
+            if self.augment:
+                # small random changes in contrast and brightness
+                alpha += np.random.uniform(-0.05,0.05)
+                beta += np.random.uniform(-2,2)
+
+                # random crop (not too small so don't cut of referee)
+                crop_ratio = np.random.uniform(0.9, 0.99)
+                crop_width = int(crop_ratio * self.IMAGE_WIDTH)
+                crop_height = int(crop_ratio * self.IMAGE_HEIGHT)
+                x = np.random.randint(0, self.IMAGE_WIDTH - crop_width)
+                y = np.random.randint(0, self.IMAGE_HEIGHT - crop_height)
+                image = image[y:y+crop_height, x:x+crop_width]
                 image = cv2.resize(image, (self.IMAGE_WIDTH, self.IMAGE_HEIGHT))
 
-                if flip:
-                    image = cv2.flip(image, 1)
-
-                if self.augment:
-                    # small random changes in contrast and brightness
-                    alpha += np.random.uniform(-0.05,0.05)
-                    beta += np.random.uniform(-2,2)
-
-                    # random crop (not too small so don't cut of referee)
-                    crop_ratio = np.random.uniform(0.9, 0.99)
-                    crop_width = int(crop_ratio * self.IMAGE_WIDTH)
-                    crop_height = int(crop_ratio * self.IMAGE_HEIGHT)
-                    x = np.random.randint(0, self.IMAGE_WIDTH - crop_width)
-                    y = np.random.randint(0, self.IMAGE_HEIGHT - crop_height)
-                    image = image[y:y+crop_height, x:x+crop_width]
-                    image = cv2.resize(image, (self.IMAGE_WIDTH, self.IMAGE_HEIGHT))
-
-                image = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
-                if self.normalize:
-                    scale  = 2
-                    add = -1
-                else:
-                    scale = 1
-                    add = 0
-            except:
-                continue
+            image = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
+            if self.normalize:
+                scale  = 2
+                add = -1
+            else:
+                scale = 1
+                add = 0
             data[idx, :, :, 0] = image[:, :, 0] / 255*scale + add
             data[idx, :, :, 1] = image[:, :, 1] / 255*scale + add
             data[idx, :, :, 2] = image[:, :, 2] / 255*scale + add
-        
         #transform data dimension from (frames, height, width, channels) to (channels, frames, height, width)
         if self.cfg.MODEL.ARCH != "mvit":
             data = torch.tensor(np.transpose(data, (3, 0, 1, 2))).float()

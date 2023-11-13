@@ -157,7 +157,7 @@ class Kinetics(torch.utils.data.Dataset):
                 rows = self._get_chunk(f, self.cfg.DATA.LOADER_CHUNK_SIZE)
             else:
                 rows = f.read().splitlines()
-                
+            rows = rows[:16]
             for clip_idx, path_label in enumerate(rows):
                 fetch_info = path_label.split(
                     self.cfg.DATA.PATH_LABEL_SEPARATOR
@@ -238,10 +238,10 @@ class Kinetics(torch.utils.data.Dataset):
         imgs = sorted(imgs) #Need to sort
         # issues with loading via cfg
         data = np.zeros((self.NUM_FRAMES, self.IMAGE_HEIGHT, self.IMAGE_WIDTH, self.CHANNELS))
-
-        flip = np.random.randint(2) # flip this entire sequence
-        if flip:
-            label = self.flip_label(label) 
+        if self.mode in ["train", "val"]:
+            flip = np.random.randint(2) # flip this entire sequence
+            if flip:
+                label = self.flip_label(label) 
 
         if self.augment:
             # randomize values for contrast and brightness

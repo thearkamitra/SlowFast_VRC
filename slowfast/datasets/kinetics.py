@@ -76,6 +76,9 @@ class Kinetics(torch.utils.data.Dataset):
         if "checkpoints_X3D_XS" in self.cfg.OUTPUT_DIR :
                 self.IMAGE_HEIGHT= 90
                 self.IMAGE_WIDTH= 120
+        if "checkpoints_C2D_8x8_R50" in self.cfg.OUTPUT_DIR:
+            self.IMAGE_HEIGHT= 90
+            self.IMAGE_WIDTH= 120
         self.NUM_FRAMES= self.cfg.DATA.NUM_FRAMES
         self.CHANNELS= 3
         self.normalize = True

@@ -656,7 +656,11 @@ class ResNet(nn.Module):
         if self.enable_detection:
             x = self.head(x, bboxes)
         else:
-            x = self.head(x)
+            try:
+                x = self.head(x)
+            except:
+                self.head.pathway0_avgpool.kernel_size = [7,3,4]
+                x = self.head(x)
         return x
 
 

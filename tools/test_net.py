@@ -72,7 +72,6 @@ def perform_test(test_loader, model, test_meter, cfg, writer=None):
                     meta[key] = val.cuda(non_blocking=True)
         test_meter.data_toc()
 
-        inputs = [x.float() for x in inputs]
         if cfg.DETECTION.ENABLE:
             # Compute the predictions.
             preds = model(inputs, meta["boxes"])
@@ -122,7 +121,10 @@ def perform_test(test_loader, model, test_meter, cfg, writer=None):
             preds = torch.sum(probs, 1)
         else:
             # Perform the forward pass.
-            preds = model(inputs)
+            try:
+                preds = model(inputs)
+            except:
+                preds = model(inputs[0])
         # Gather all the predictions across all the devices to perform ensemble.
         if cfg.NUM_GPUS > 1:
             preds, labels, video_idx = du.all_gather([preds, labels, video_idx])
@@ -135,9 +137,14 @@ def perform_test(test_loader, model, test_meter, cfg, writer=None):
 
         if not cfg.VIS_MASK.ENABLE:
             # Update and log stats.
-            test_meter.update_stats(
-                preds.detach(), labels.detach(), video_idx.detach()
-            )
+            try:
+                test_meter.update_stats(
+                    preds.detach(), labels.detach(), video_idx.detach()
+                )
+            except:
+                test_meter.update_stats(
+                    preds.detach(), labels[0].detach(), video_idx[0].detach()
+                )
         test_meter.log_iter_stats(cur_iter)
 
         test_meter.iter_tic()

@@ -335,14 +335,13 @@ def eval_epoch(
                 time = [x.cuda() for x in time]
                 time = torch.tensor(time)
             time = time.cuda()
-            
+        
         batch_size = (
             inputs[0][0].size(0)
             if isinstance(inputs[0], list)
             else inputs[0].size(0)
         )
         val_meter.data_toc()
-
         if cfg.DETECTION.ENABLE:
             # Compute the predictions.
             preds = model(inputs, meta["boxes"])
@@ -388,8 +387,10 @@ def eval_epoch(
                 )
                 preds = torch.sum(probs, 1)
             else:
-                preds = model(inputs)
-
+                try:
+                    preds = model(inputs)
+                except:
+                    preds = model(inputs[0])
             if cfg.DATA.MULTI_LABEL:
                 if cfg.NUM_GPUS > 1:
                     preds, labels = du.all_gather([preds, labels])

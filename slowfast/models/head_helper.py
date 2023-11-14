@@ -347,9 +347,9 @@ class ResNetBasicHead(nn.Module):
         if not self.training:
             if self.act is not None:
                 x_proj = self.act(x_proj)
-            # Performs fully convlutional inference.
-            if x_proj.ndim == 5 and x_proj.shape[1:4] > torch.Size([1, 1, 1]):
-                x_proj = x_proj.mean([1, 2, 3])
+        # Performs fully convlutional inference.
+        if x_proj.ndim == 5 and x_proj.shape[1:4] > torch.Size([1, 1, 1]):
+            x_proj = x_proj.mean([1, 2, 3])
 
         x_proj = x_proj.view(x_proj.shape[0], -1)
 

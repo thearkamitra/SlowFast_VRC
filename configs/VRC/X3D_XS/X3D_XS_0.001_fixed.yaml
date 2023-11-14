@@ -39,7 +39,7 @@ BN:
   NUM_BATCHES_PRECISE: 200
   WEIGHT_DECAY: 0.0
 SOLVER:
-  BASE_LR: 0.05 # 1 machine
+  BASE_LR: 0.001 # 1 machine
   BASE_LR_SCALE_NUM_SHARDS: True
   LR_POLICY: const
   MAX_EPOCH: 80
@@ -58,6 +58,6 @@ DATA_LOADER:
   PIN_MEMORY: True
 NUM_GPUS: 1
 RNG_SEED: 0
-OUTPUT_DIR: checkpoints_X3D_XS_0.05_fixed_new
+OUTPUT_DIR: checkpoints_X3D_XS_0.001_fixed_new
 TENSORBOARD:
   ENABLE: True

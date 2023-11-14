@@ -428,6 +428,7 @@ class SlowFast(nn.Module):
         x = self.s1_fuse(x)
         x = self.s2(x)
         x = self.s2_fuse(x)
+        # breakpoint()
         for pathway in range(self.num_pathways):
             pool = getattr(self, "pathway{}_pool".format(pathway))
             x[pathway] = pool(x[pathway])
@@ -439,7 +440,17 @@ class SlowFast(nn.Module):
         if self.enable_detection:
             x = self.head(x, bboxes)
         else:
-            x = self.head(x)
+            try:
+                x = self.head(x)
+            except:
+                if hasattr(self.head,"pathway0_avgpool"):
+                    self.head.pathway0_avgpool.kernel_size[1] = 3
+                    self.head.pathway0_avgpool.kernel_size[2] = 4
+                if hasattr(self.head,"pathway1_avgpool"):
+                    self.head.pathway1_avgpool.kernel_size[1] = 3
+                    self.head.pathway1_avgpool.kernel_size[2] = 4
+                x = self.head(x)
+            
         return x
 
 
@@ -659,7 +670,8 @@ class ResNet(nn.Module):
             try:
                 x = self.head(x)
             except:
-                self.head.pathway0_avgpool.kernel_size = [7,3,4]
+                self.head.pathway0_avgpool.kernel_size[1] = 3
+                self.head.pathway0_avgpool.kernel_size[2] = 4
                 x = self.head(x)
         return x
 

@@ -316,6 +316,7 @@ class ResNetBasicHead(nn.Module):
             len(inputs) == self.num_pathways
         ), "Input tensor does not contain {} pathway".format(self.num_pathways)
         pool_out = []
+        # breakpoint()
         for pathway in range(self.num_pathways):
             m = getattr(self, "pathway{}_avgpool".format(pathway))
             pool_out.append(m(inputs[pathway]))
@@ -476,6 +477,10 @@ class X3DHead(nn.Module):
         x = self.conv_5(inputs[0])
         x = self.conv_5_bn(x)
         x = self.conv_5_relu(x)
+        if hasattr(self, "avg_pool"): ## This is just for shape of 90x120
+            if x.shape[-1] != 3:
+                if self.avg_pool.kernel_size[-1] != 4:
+                    self.avg_pool.kernel_size[-1] = 4
         x = self.avg_pool(x)
 
         x = self.lin_5(x)

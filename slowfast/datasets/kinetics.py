@@ -256,9 +256,9 @@ class Kinetics(torch.utils.data.Dataset):
                 image_path = os.path.join(folder_path, imgs[idx])
             image = cv2.imread(image_path).astype(np.float32) # idx counts from 0 upwards
             image = cv2.resize(image, (self.IMAGE_WIDTH, self.IMAGE_HEIGHT))
-
-            if flip:
-                image = cv2.flip(image, 1)
+            if self.mode in ["train", "val"]:
+                if flip:
+                    image = cv2.flip(image, 1)
 
             if self.augment:
                 # small random changes in contrast and brightness

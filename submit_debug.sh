@@ -2,7 +2,7 @@
 #SBATCH -n 8
 #SBATCH -G 4
 #SBATCH --gres=gpumem:20g
-#SBATCH --time=3:58:00
+#SBATCH --time=8:58:00
 #SBATCH --mem-per-cpu=4G
 #SBATCH --output=sbatch_log/%j.out
 #SBATCH --error=sbatch_err/%j.out

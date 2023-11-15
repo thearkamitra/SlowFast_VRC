@@ -79,9 +79,6 @@ class Kinetics(torch.utils.data.Dataset):
         self.use_position = False  
         self.use_newer_model = False  
         self.num_classes = 13
-        if self.cfg.MODEL.ARCH == "mvit":
-            self.IMAGE_HEIGHT = 224
-            self.IMAGE_WIDTH = 224
         self.p_convert_gray = self.cfg.DATA.COLOR_RND_GRAYSCALE
         self.p_convert_dt = self.cfg.DATA.TIME_DIFF_PROB
         self._video_meta = {}

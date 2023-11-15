@@ -237,16 +237,22 @@ def test(cfg):
             for inputs, *_ in test_loader:
                 break
             preds = model(inputs)
-            obtain_test_benchmark(model, inputs)
+            # obtain_test_benchmark(model, inputs)
+            flops, params = 0.0, 0.0
+            if du.is_master_proc() and cfg.LOG_MODEL_INFO:
+                model.eval()
+                flops, params = misc.log_model_info(
+                    model, cfg, use_train_input=False
+                )
+
+            return None            
+
         flops, params = 0.0, 0.0
         if du.is_master_proc() and cfg.LOG_MODEL_INFO:
             model.eval()
             flops, params = misc.log_model_info(
                 model, cfg, use_train_input=False
             )
-            
-        if cfg.BENCHMARK_TEST:
-            return None            
 
         if du.is_master_proc() and cfg.LOG_MODEL_INFO:
             misc.log_model_info(model, cfg, use_train_input=False)

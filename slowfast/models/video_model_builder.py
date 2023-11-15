@@ -855,8 +855,8 @@ class MViT(nn.Module):
             self.T = cfg.DATA.NUM_FRAMES // self.patch_stride[0] + 1
         else:
             self.T = cfg.DATA.NUM_FRAMES // self.patch_stride[0]
-        self.H = cfg.DATA.TRAIN_CROP_SIZE // self.patch_stride[1]
-        self.W = cfg.DATA.TRAIN_CROP_SIZE // self.patch_stride[2]
+        self.H = 30
+        self.W = 30
         # Prepare output.
         num_classes = cfg.MODEL.NUM_CLASSES
         embed_dim = cfg.MVIT.EMBED_DIM
@@ -894,8 +894,8 @@ class MViT(nn.Module):
 
         if cfg.MODEL.ACT_CHECKPOINT:
             self.patch_embed = checkpoint_wrapper(self.patch_embed)
-        self.input_dims = [temporal_size, spatial_size, spatial_size]
-        assert self.input_dims[1] == self.input_dims[2]
+        self.input_dims = [temporal_size, 90, 120]
+        # assert self.input_dims[1] == self.input_dims[2]
         self.patch_dims = [
             self.input_dims[i] // self.patch_stride[i]
             for i in range(len(self.input_dims))

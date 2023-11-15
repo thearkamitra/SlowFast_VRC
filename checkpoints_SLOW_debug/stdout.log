@@ -1,0 +1,4 @@
+[11/15 18:58:06][INFO] kinetics.py:  108: Constructing VRC test...
+[11/15 18:58:06][INFO] kinetics.py:  191: Constructing VRC dataloader (size: 850 skip_rows 0) from /cluster/scratch/amitra/Full_Dataset/test.csv 
+[11/15 18:58:06][INFO] test_net.py:  234: Testing model for 850 iterations
+[11/15 19:01:21][INFO] test_net.py:  199: Average time for 100 epochs of testing: 1.734314509718679 seconds

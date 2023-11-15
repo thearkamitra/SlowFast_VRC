@@ -15,3 +15,5 @@ def add_custom_config(_C):
     _C.DATASET_TYPE.TST = True
     _C.DATASET_TYPE.SYN_EASY = True
     _C.DATASET_TYPE.SYN_HARD = False
+    
+    _C.BENCHMARK_TEST = False

@@ -20,7 +20,6 @@ from slowfast.utils.meters import AVAMeter, TestMeter
 
 logger = logging.get_logger(__name__)
 
-
 @torch.no_grad()
 def perform_test(test_loader, model, test_meter, cfg, writer=None):
     """
@@ -174,6 +173,30 @@ def perform_test(test_loader, model, test_meter, cfg, writer=None):
     test_meter.finalize_metrics()
     return test_meter
 
+def obtain_test_benchmark(model, inputs, epochs = 100, warmup = 10):
+    """
+    Obtain the benchmark for the test loader.
+    Get the time for 1000 epochs of testing and the throughput (FPS).
+    
+    Args:
+        model (model): the pretrained video model to test.
+        inputs (tensor): the input tensor to the model.
+    """
+    import time
+    from datetime import timedelta
+    # Enable eval mode.
+    model.eval()
+    # Do warmup for 10 iterations.
+    for i in range(warmup):
+        preds = model(inputs)
+    # Obtain the time for 1000 epochs of testing.
+    start_time = time.perf_counter()
+    for i in range(epochs):
+        preds = model(inputs)
+    end_time = time.perf_counter() 
+    total_time =(end_time-start_time)/epochs
+    #convert the time to ms and log the values
+    logger.info(f"Average time for {epochs} epochs of testing: {total_time} seconds")    
 
 def test(cfg):
     """
@@ -205,12 +228,24 @@ def test(cfg):
 
         # Build the video model and print model statistics.
         model = build_model(cfg)
+        
+        test_loader = loader.construct_loader(cfg, "test")
+        logger.info("Testing model for {} iterations".format(len(test_loader)))
+        
+        if cfg.BENCHMARK_TEST:
+            for inputs, *_ in test_loader:
+                break
+            preds = model(inputs)
+            obtain_test_benchmark(model, inputs)
         flops, params = 0.0, 0.0
         if du.is_master_proc() and cfg.LOG_MODEL_INFO:
             model.eval()
             flops, params = misc.log_model_info(
                 model, cfg, use_train_input=False
             )
+            
+        if cfg.BENCHMARK_TEST:
+            return None            
 
         if du.is_master_proc() and cfg.LOG_MODEL_INFO:
             misc.log_model_info(model, cfg, use_train_input=False)
@@ -228,8 +263,6 @@ def test(cfg):
         cu.load_test_checkpoint(cfg, model)
 
         # Create video testing loaders.
-        test_loader = loader.construct_loader(cfg, "test")
-        logger.info("Testing model for {} iterations".format(len(test_loader)))
 
         if cfg.DETECTION.ENABLE:
             assert cfg.NUM_GPUS == cfg.TEST.BATCH_SIZE or cfg.NUM_GPUS == 0

@@ -6,8 +6,8 @@ import glob
 
 checkpoint_files = os.listdir()
 checkpoint_files = [f for f in checkpoint_files if f.startswith('checkpoints_')]
-
-new_events_dir = 'events_files'
+checkpoint_files = [f for f in checkpoint_files if "old" not in f]
+new_events_dir = 'events_files_new'
 os.makedirs(new_events_dir, exist_ok=True)
 
 for checkpoint_file in checkpoint_files:

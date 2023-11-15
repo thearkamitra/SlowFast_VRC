@@ -223,8 +223,9 @@ def test(cfg):
         cfg.TEST.NUM_ENSEMBLE_VIEWS = num_view
 
         # Print config.
-        logger.info("Test with config:")
-        logger.info(cfg)
+        if not cfg.BENCHMARK_TEST:
+            logger.info("Test with config:")
+            logger.info(cfg)
 
         # Build the video model and print model statistics.
         model = build_model(cfg)

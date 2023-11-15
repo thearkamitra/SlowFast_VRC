@@ -277,7 +277,7 @@ _C.TEST.NUM_ENSEMBLE_VIEWS = 10
 
 # Number of crops to sample from a frame spatially for aggregating the
 # prediction results.
-_C.TEST.NUM_SPATIAL_CROPS = 3
+_C.TEST.NUM_SPATIAL_CROPS = 1
 
 # Checkpoint types include `caffe2` or `pytorch`.
 _C.TEST.CHECKPOINT_TYPE = "pytorch"

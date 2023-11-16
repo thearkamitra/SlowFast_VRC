@@ -22,6 +22,11 @@ def topks_correct(preds, labels, ks):
         topks_correct (list): list of numbers, where the `i`-th entry
             corresponds to the number of top-`ks[i]` correct predictions.
     """
+    if isinstance(preds, list):
+        preds = preds[0]
+    if isinstance(labels, list):
+        labels = labels[0]
+        # breakpoint()
     assert preds.size(0) == labels.size(
         0
     ), "Batch dim of predictions and labels must match"

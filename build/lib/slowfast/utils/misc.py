@@ -119,6 +119,13 @@ def _get_model_analysis_input(cfg, use_train_input):
                 cfg.DATA.TEST_CROP_SIZE,
                 cfg.DATA.TEST_CROP_SIZE,
             )
+    # if cfg.BENCHMARK_TEST:
+    input_tensors = torch.rand(
+        rgb_dimension,
+        cfg.DATA.NUM_FRAMES,
+        90,
+        120
+    )
     model_inputs = pack_pathway_output(cfg, input_tensors)
     for i in range(len(model_inputs)):
         model_inputs[i] = model_inputs[i].unsqueeze(0)

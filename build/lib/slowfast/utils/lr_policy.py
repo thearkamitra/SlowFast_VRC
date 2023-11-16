@@ -15,6 +15,9 @@ def get_lr_at_epoch(cfg, cur_epoch):
             slowfast/config/defaults.py
         cur_epoch (float): the number of epoch of the current training stage.
     """
+    
+    if cfg.SOLVER.LR_POLICY != "cosine":
+        return cfg.SOLVER.BASE_LR
     lr = get_lr_func(cfg.SOLVER.LR_POLICY)(cfg, cur_epoch)
     # Perform warm up.
     if cur_epoch < cfg.SOLVER.WARMUP_EPOCHS:
@@ -80,6 +83,17 @@ def get_step_index(cfg, cur_epoch):
             break
     return ind - 1
 
+def lr_func_const(cfg, cur_epoch):
+    """
+    Retrieve the learning rate to specified values at specified epoch with the
+    steps with relative learning rate schedule.
+    Args:
+        cfg (CfgNode): configs. Details can be found in
+            slowfast/config/defaults.py
+        cur_epoch (float): the number of epoch of the current training stage.
+    """
+
+    return cfg.SOLVER.BASE_LR
 
 def get_lr_func(lr_policy):
     """

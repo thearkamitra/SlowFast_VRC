@@ -9,7 +9,7 @@ import os
 from collections import defaultdict, deque
 import torch
 from fvcore.common.timer import Timer
-from sklearn.metrics import average_precision_score
+from sklearn.metrics import average_precision_score, accuracy_score
 
 import slowfast.datasets.ava_helper as ava_helper
 import slowfast.utils.logging as logging
@@ -283,6 +283,7 @@ class TestMeter:
         self.overall_iters = overall_iters
         self.multi_label = multi_label
         self.ensemble_method = ensemble_method
+        self.all_hardness = None
         # Initialize tensors.
         self.video_preds = torch.zeros((num_videos, num_cls))
         if multi_label:
@@ -293,6 +294,7 @@ class TestMeter:
             if multi_label
             else torch.zeros((num_videos)).long()
         )
+        self.hardness_labels = torch.zeros((num_videos)).long()
         self.clip_count = torch.zeros((num_videos)).long()
         self.topk_accs = []
         self.stats = {}
@@ -344,6 +346,7 @@ class TestMeter:
                     )
                 )
             self.clip_count[vid_id] += 1
+            self.hardness_labels[vid_id] = self.all_hardness[clip_ids[ind]]
 
     def log_iter_stats(self, cur_iter):
         """
@@ -418,8 +421,53 @@ class TestMeter:
                 self.stats["top{}_acc".format(k)] = "{:.{prec}f}".format(
                     topk, prec=2
                 )
+        self.get_vrc_metrics()
         logging.log_json_stats(self.stats)
-
+    
+        
+    def get_gesture_accuracy(self, labels, preds):
+        mapping = {0:0, 1:1, 2:1, 3:2,4:2, 5:3, 6:3, 7:4, 8:4, 9:5, 10:5, 11:6, 12:7}
+        new_labels = [mapping[x] for x in labels]
+        new_preds = [mapping[x] for x in preds]
+        return round(100 * accuracy_score(new_labels, new_preds), 2)
+    
+    
+    def get_direction_accuracy(self, labels, preds):
+        mapping = {0:0, 1:1, 2:2, 3:1,4:2, 5:1, 6:2, 7:1, 8:2, 9:1, 10:2, 11:3, 12:3}
+        new_labels_ = [mapping[x] for x in labels]
+        new_preds_ = [mapping[x] for x in preds]
+        new_labels = []
+        new_preds = []
+        for idx, label in enumerate(new_labels_):
+            if label==1 or label==2:
+                new_labels.append(label)
+                new_preds.append(new_preds_[idx])
+        return round(100 * accuracy_score(new_labels, new_preds), 2)
+    
+    def get_hard_metrics(self, labels, preds, name = "Overall"):
+        acc_overall = round(100 * accuracy_score(labels, preds), 2)
+        acc_gesture = self.get_gesture_accuracy(labels, preds)
+        acc_direction = self.get_direction_accuracy(labels, preds)
+        ## Log and print in nice format
+        logger.info(f"Hardness: {name} Accuracy: {acc_overall} Gesture: {acc_gesture} Direction: {acc_direction}")
+        print(f"Hardness: {name} Accuracy: {acc_overall} Gesture: {acc_gesture} Direction: {acc_direction}")
+        
+    
+    def get_vrc_metrics(self):
+        all_preds = self.video_preds.cpu().numpy()
+        all_labels = self.video_labels.cpu().numpy()
+        all_hardness = self.hardness_labels.cpu().numpy()
+        final_preds = np.argmax(all_preds, axis=1)
+        ## Get the accuracy for each hardness level
+        easy_preds = final_preds[all_hardness == 0]
+        easy_labels = all_labels[all_hardness == 0]
+        
+        hard_preds = final_preds[all_hardness == 1]
+        hard_labels = all_labels[all_hardness == 1]
+        
+        self.get_hard_metrics(easy_labels, easy_preds, name = "Easy")
+        self.get_hard_metrics(hard_labels, hard_preds, name = "Hard")
+        self.get_hard_metrics(all_labels, final_preds, name = "Overall")
 
 class ScalarMeter:
     """

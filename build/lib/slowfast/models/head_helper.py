@@ -316,6 +316,7 @@ class ResNetBasicHead(nn.Module):
             len(inputs) == self.num_pathways
         ), "Input tensor does not contain {} pathway".format(self.num_pathways)
         pool_out = []
+        # breakpoint()
         for pathway in range(self.num_pathways):
             m = getattr(self, "pathway{}_avgpool".format(pathway))
             pool_out.append(m(inputs[pathway]))
@@ -347,9 +348,9 @@ class ResNetBasicHead(nn.Module):
         if not self.training:
             if self.act is not None:
                 x_proj = self.act(x_proj)
-            # Performs fully convlutional inference.
-            if x_proj.ndim == 5 and x_proj.shape[1:4] > torch.Size([1, 1, 1]):
-                x_proj = x_proj.mean([1, 2, 3])
+        # Performs fully convlutional inference.
+        if x_proj.ndim == 5 and x_proj.shape[1:4] > torch.Size([1, 1, 1]):
+            x_proj = x_proj.mean([1, 2, 3])
 
         x_proj = x_proj.view(x_proj.shape[0], -1)
 
@@ -476,6 +477,10 @@ class X3DHead(nn.Module):
         x = self.conv_5(inputs[0])
         x = self.conv_5_bn(x)
         x = self.conv_5_relu(x)
+        if hasattr(self, "avg_pool"): ## This is just for shape of 90x120
+            if x.shape[-1] != 3:
+                if self.avg_pool.kernel_size[-1] != 4:
+                    self.avg_pool.kernel_size[-1] = 4
         x = self.avg_pool(x)
 
         x = self.lin_5(x)
@@ -489,11 +494,11 @@ class X3DHead(nn.Module):
         if hasattr(self, "dropout"):
             x = self.dropout(x)
         x = self.projection(x)
-
+        # breakpoint()
         # Performs fully convlutional inference.
         if not self.training:
             x = self.act(x)
-            x = x.mean([1, 2, 3])
+        x = x.mean([1, 2, 3])
 
         x = x.view(x.shape[0], -1)
         return x

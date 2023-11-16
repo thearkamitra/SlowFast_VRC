@@ -428,6 +428,7 @@ class SlowFast(nn.Module):
         x = self.s1_fuse(x)
         x = self.s2(x)
         x = self.s2_fuse(x)
+        # breakpoint()
         for pathway in range(self.num_pathways):
             pool = getattr(self, "pathway{}_pool".format(pathway))
             x[pathway] = pool(x[pathway])
@@ -439,7 +440,17 @@ class SlowFast(nn.Module):
         if self.enable_detection:
             x = self.head(x, bboxes)
         else:
-            x = self.head(x)
+            try:
+                x = self.head(x)
+            except:
+                if hasattr(self.head,"pathway0_avgpool"):
+                    self.head.pathway0_avgpool.kernel_size[1] = 3
+                    self.head.pathway0_avgpool.kernel_size[2] = 4
+                if hasattr(self.head,"pathway1_avgpool"):
+                    self.head.pathway1_avgpool.kernel_size[1] = 3
+                    self.head.pathway1_avgpool.kernel_size[2] = 4
+                x = self.head(x)
+            
         return x
 
 
@@ -656,7 +667,12 @@ class ResNet(nn.Module):
         if self.enable_detection:
             x = self.head(x, bboxes)
         else:
-            x = self.head(x)
+            try:
+                x = self.head(x)
+            except:
+                self.head.pathway0_avgpool.kernel_size[1] = 3
+                self.head.pathway0_avgpool.kernel_size[2] = 4
+                x = self.head(x)
         return x
 
 
@@ -835,9 +851,12 @@ class MViT(nn.Module):
         self.patch_stride = cfg.MVIT.PATCH_STRIDE
         if self.use_2d_patch:
             self.patch_stride = [1] + self.patch_stride
-        self.T = cfg.DATA.NUM_FRAMES // self.patch_stride[0]
-        self.H = cfg.DATA.TRAIN_CROP_SIZE // self.patch_stride[1]
-        self.W = cfg.DATA.TRAIN_CROP_SIZE // self.patch_stride[2]
+        if cfg.DATA.NUM_FRAMES% self.patch_stride[0]:
+            self.T = cfg.DATA.NUM_FRAMES // self.patch_stride[0] + 1
+        else:
+            self.T = cfg.DATA.NUM_FRAMES // self.patch_stride[0]
+        self.H = 30
+        self.W = 30
         # Prepare output.
         num_classes = cfg.MODEL.NUM_CLASSES
         embed_dim = cfg.MVIT.EMBED_DIM
@@ -875,8 +894,8 @@ class MViT(nn.Module):
 
         if cfg.MODEL.ACT_CHECKPOINT:
             self.patch_embed = checkpoint_wrapper(self.patch_embed)
-        self.input_dims = [temporal_size, spatial_size, spatial_size]
-        assert self.input_dims[1] == self.input_dims[2]
+        self.input_dims = [temporal_size, 90, 120]
+        # assert self.input_dims[1] == self.input_dims[2]
         self.patch_dims = [
             self.input_dims[i] // self.patch_stride[i]
             for i in range(len(self.input_dims))
@@ -1187,8 +1206,11 @@ class MViT(nn.Module):
         return x
 
     def forward(self, x, bboxes=None, return_attn=False):
-        x = x[0]
-        x, bcthw = self.patch_embed(x)
+        y = x[0]
+        if len(y.shape) != 5:
+            if y.shape[0]!=1:
+                y = y.expand(1, *y.shape)
+        x, bcthw = self.patch_embed(y)
         bcthw = list(bcthw)
         if len(bcthw) == 4:  # Fix bcthw in case of 4D tensor
             bcthw.insert(2, torch.tensor(self.T))
@@ -1207,7 +1229,6 @@ class MViT(nn.Module):
             if self.use_fixed_sincos_pos:
                 cls_tokens = cls_tokens + self.pos_embed[:, :s, :]
             x = torch.cat((cls_tokens, x), dim=1)
-
         if self.use_abs_pos:
             if self.sep_pos_embed:
                 pos_embed = self.pos_embed_spatial.repeat(

@@ -71,15 +71,14 @@ class Kinetics(torch.utils.data.Dataset):
 
         ## to set
         
-        self.IMAGE_HEIGHT= 90*3
-        self.IMAGE_WIDTH= 120*3
-        self.NUM_FRAMES= 15
+        self.IMAGE_HEIGHT= 90
+        self.IMAGE_WIDTH= 120
+        self.NUM_FRAMES= self.cfg.DATA.NUM_FRAMES
         self.CHANNELS= 3
         self.normalize = True
         self.use_position = False  
         self.use_newer_model = False  
         self.num_classes = 13
-
         self.p_convert_gray = self.cfg.DATA.COLOR_RND_GRAYSCALE
         self.p_convert_dt = self.cfg.DATA.TIME_DIFF_PROB
         self._video_meta = {}
@@ -121,13 +120,15 @@ class Kinetics(torch.utils.data.Dataset):
         Construct the video loader.
         """
         path_to_file = os.path.join(
-            self.cfg.DATA.PATH_TO_DATA_DIR, "small_{}.csv".format(self.mode)
+            self.cfg.DATA.PATH_TO_DATA_DIR, "{}.csv".format(self.mode)
         )
         assert pathmgr.exists(path_to_file), "{} dir not found".format(
             path_to_file
         )
         self._path_to_videos = []
         self._labels = []
+        self.all_hardness = {}
+        self._hardness = []
         self._spatial_temporal_idx = []
         self.cur_iter = 0
         self.chunk_epoch = 0
@@ -136,6 +137,15 @@ class Kinetics(torch.utils.data.Dataset):
 
         # self._path_to_videos = np.random.permutation(open(path_to_file).readlines())
 
+        path_to_meta_file = os.path.join(
+            self.cfg.DATA.PATH_TO_DATA_DIR, "meta.csv".format(self.mode)
+        )
+        with pathmgr.open(path_to_meta_file, "r") as f:
+            meta_data = f.read().splitlines()
+        for option in meta_data:
+            name, method = option.split(";")
+            self.all_hardness[name] = method
+            
         with pathmgr.open(path_to_file, "r") as f:
             if self.use_chunk_loading:
                 rows = self._get_chunk(f, self.cfg.DATA.LOADER_CHUNK_SIZE)
@@ -147,6 +157,17 @@ class Kinetics(torch.utils.data.Dataset):
                 )
                 path = fetch_info[0]
                 label = fetch_info[-1]
+                if "CKG" in path and not self.cfg.DATASET_TYPE.CKG:
+                    continue
+                if "CKF" in path and not self.cfg.DATASET_TYPE.CKF:
+                    continue
+                if "TST" in path and not self.cfg.DATASET_TYPE.TST:
+                    continue
+                if "SYN" in path:
+                    if self.all_hardness.get(path)=="easy" and not self.cfg.DATASET_TYPE.SYN_EASY:
+                        continue
+                    if self.all_hardness.get(path)=="hard" and not self.cfg.DATASET_TYPE.SYN_HARD:
+                        continue
                 for idx in range(self._num_clips):
                     self._path_to_videos.append(
                         os.path.join(self.cfg.DATA.PATH_TO_DATA_DIR, path)
@@ -154,6 +175,11 @@ class Kinetics(torch.utils.data.Dataset):
                     self._labels.append(int(label))
                     self._spatial_temporal_idx.append(idx)
                     self._video_meta[clip_idx * self._num_clips + idx] = {}
+                    if self.all_hardness.get(path)=="hard":
+                        self._hardness.append(1)
+                    else:
+                        self._hardness.append(0)
+                        
         assert (
             len(self._path_to_videos) > 0
         ), "Failed to load VRC split {} from {}".format(
@@ -164,6 +190,8 @@ class Kinetics(torch.utils.data.Dataset):
                 len(self._path_to_videos), self.skip_rows, path_to_file
             )
         )
+        
+        
     
     def flip_label(self, label):
         if label not in range(13):
@@ -203,10 +231,10 @@ class Kinetics(torch.utils.data.Dataset):
         imgs = sorted(imgs) #Need to sort
         # issues with loading via cfg
         data = np.zeros((self.NUM_FRAMES, self.IMAGE_HEIGHT, self.IMAGE_WIDTH, self.CHANNELS))
-
-        flip = np.random.randint(2) # flip this entire sequence
-        if flip:
-            label = self.flip_label(label) 
+        if self.mode in ["train", "val"]:
+            flip = np.random.randint(2) # flip this entire sequence
+            if flip:
+                label = self.flip_label(label) 
 
         if self.augment:
             # randomize values for contrast and brightness
@@ -215,12 +243,16 @@ class Kinetics(torch.utils.data.Dataset):
         else:
             alpha, beta = 1, 0
         for idx in range(self.NUM_FRAMES): # take frames starting from the beginning (even if less frames needed)
-            image_path = os.path.join(folder_path, imgs[idx])
+            if len(imgs) <= idx:
+                # if we are out of frames, take the last frame
+                image_path = os.path.join(folder_path, imgs[-1])
+            else:
+                image_path = os.path.join(folder_path, imgs[idx])
             image = cv2.imread(image_path).astype(np.float32) # idx counts from 0 upwards
             image = cv2.resize(image, (self.IMAGE_WIDTH, self.IMAGE_HEIGHT))
-
-            if flip:
-                image = cv2.flip(image, 1)
+            if self.mode in ["train", "val"]:
+                if flip:
+                    image = cv2.flip(image, 1)
 
             if self.augment:
                 # small random changes in contrast and brightness
@@ -243,16 +275,22 @@ class Kinetics(torch.utils.data.Dataset):
             else:
                 scale = 1
                 add = 0
-
             data[idx, :, :, 0] = image[:, :, 0] / 255*scale + add
             data[idx, :, :, 1] = image[:, :, 1] / 255*scale + add
             data[idx, :, :, 2] = image[:, :, 2] / 255*scale + add
-        
         #transform data dimension from (frames, height, width, channels) to (channels, frames, height, width)
-        data = torch.tensor(np.transpose(data, (3, 0, 1, 2))).float()
+        if self.cfg.MODEL.ARCH != "mvit":
+            data = torch.tensor(np.transpose(data, (3, 0, 1, 2))).float()
+        else:
+            data = torch.tensor(np.transpose(data, (3, 0, 1, 2))).float()
         frames = utils.pack_pathway_output(self.cfg, data)
-        # frames = [slow_data, data]
-        return frames, label, index, 0, {}
+        time = 0
+        if self.cfg.MODEL.ARCH == "mvit":
+            frames = [frames]
+            label = [label]
+            index = [index]
+            time = [time]
+        return frames, label, index, time, {}
         # How the return should look like:
         return frames, label, index, time_idx, {}
 

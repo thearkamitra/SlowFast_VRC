@@ -73,6 +73,10 @@ def get_last_checkpoint(path_to_job, task):
         names = [f for f in names if f.startswith("checkpoint")]
     if len(names) == 0:
         return None
+    # for name in names:
+    #     if "40" in name:
+    #         print("40th epoch found, skipping")
+    #         return os.path.join(d, name)
     # Sort the checkpoints by epoch.
     name = sorted(names)[-1]
     return os.path.join(d, name)

@@ -230,9 +230,17 @@ def test(cfg):
         # Build the video model and print model statistics.
         model = build_model(cfg)
         
-        test_loader = loader.construct_loader(cfg, "test")
+        test_loader = loader.construct_loader(cfg, "val")
         logger.info("Testing model for {} iterations".format(len(test_loader)))
         
+        for inputs, *_ in test_loader:
+            break
+        if cfg.NUM_GPUS:
+            inputs = [x.float().cuda() for x in inputs]
+        else:
+            inputs = [x.float() for x in inputs]
+        preds = model(inputs)
+        print("New model structure loaded")
         if cfg.BENCHMARK_TEST:
             for inputs, *_ in test_loader:
                 break

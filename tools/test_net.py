@@ -7,6 +7,7 @@ import numpy as np
 import os
 import pickle
 import torch
+from slowfast.datasets.utils import pack_pathway_output
 import torch.autograd.profiler as profiler
 import slowfast.utils.checkpoint as cu
 import slowfast.utils.distributed as du
@@ -235,12 +236,19 @@ def test(cfg):
 
         # Build the video model and print model statistics.
         model = build_model(cfg)
-        
-        test_loader = loader.construct_loader(cfg, "test")
-        logger.info("Testing model for {} iterations".format(len(test_loader)))
-        
-        for inputs, *_ in test_loader:
-            break
+        input_tensors = torch.rand(
+        3,
+        cfg.DATA.NUM_FRAMES,
+        90,
+        120
+        )
+        model_inputs = pack_pathway_output(cfg, input_tensors)
+        for i in range(len(model_inputs)):
+            model_inputs[i] = model_inputs[i].unsqueeze(0)
+            if cfg.NUM_GPUS:
+                model_inputs[i] = model_inputs[i].cuda(non_blocking=True)
+
+        inputs = model_inputs
         if cfg.NUM_GPUS:
             inputs = [x.float().cuda() for x in inputs]
         else:
@@ -248,18 +256,16 @@ def test(cfg):
         preds = model(inputs)
         print("New model structure loaded")
         if cfg.BENCHMARK_TEST:
-            for inputs, *_ in test_loader:
-                break
-            preds = model(inputs)
             obtain_test_benchmark(model, inputs)
-            # flops, params = 0.0, 0.0
-            # if du.is_master_proc() and cfg.LOG_MODEL_INFO:
-            #     model.eval()
-            #     flops, params = misc.log_model_info(
-            #         model, cfg, use_train_input=False
-            #     )
-
+            flops, params = 0.0, 0.0
+            if du.is_master_proc() and cfg.LOG_MODEL_INFO:
+                model.eval()
+                flops, params = misc.log_model_info(
+                    model, cfg, use_train_input=False
+                )
             return None            
+        test_loader = loader.construct_loader(cfg, "test")
+        logger.info("Testing model for {} iterations".format(len(test_loader)))
 
         flops, params = 0.0, 0.0
         if du.is_master_proc() and cfg.LOG_MODEL_INFO:

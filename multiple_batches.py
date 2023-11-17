@@ -1,14 +1,9 @@
 import os
 import time
-files = os.listdir("configs/VRC")
+files = os.listdir("configs/VRC/X3D_L")
 
-all_commands = [
-    "configs/VRC/C2D/C2D_8x8_R50_0.1_fixed.yaml",
-    "configs/VRC/I3D/I3D_8x8_R50_0.5.yaml",
-    "configs/VRC/X3D_XS/X3D_XS_0.05_fixed.yaml",
-    "configs/VRC/SLOW/SLOW_8x8_R50.yaml",
-    "configs/VRC/SLOWFAST/SLOWFAST_8x8_R50_0.1_fixed.yaml",
-]
+all_commands = ["configs/VRC/X3D_L/" + x for x in files if x.endswith("yaml")]
+
 for command in all_commands:
     if not os.path.exists(command):
         print(f"command {command} does not exist")

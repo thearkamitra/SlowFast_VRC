@@ -481,8 +481,10 @@ class X3DHead(nn.Module):
             if x.shape[-1] != 3:
                 if self.avg_pool.kernel_size[-1] != 4:
                     self.avg_pool.kernel_size[-1] = 4
+            if x.shape[-2] == 3:
+                if self.avg_pool.kernel_size[-2] != 3:
+                    self.avg_pool.kernel_size[-2] = 3
         x = self.avg_pool(x)
-
         x = self.lin_5(x)
         if self.bn_lin5_on:
             x = self.lin_5_bn(x)

@@ -7,7 +7,7 @@ import numpy as np
 import os
 import pickle
 import torch
-
+import torch.autograd.profiler as profiler
 import slowfast.utils.checkpoint as cu
 import slowfast.utils.distributed as du
 import slowfast.utils.logging as logging
@@ -173,7 +173,7 @@ def perform_test(test_loader, model, test_meter, cfg, writer=None):
     test_meter.finalize_metrics()
     return test_meter
 
-def obtain_test_benchmark(model, inputs, epochs = 100, warmup = 10):
+def obtain_test_benchmark(model, inputs, epochs = 100, warmup = 10, first_method= True):
     """
     Obtain the benchmark for the test loader.
     Get the time for 1000 epochs of testing and the throughput (FPS).
@@ -186,6 +186,12 @@ def obtain_test_benchmark(model, inputs, epochs = 100, warmup = 10):
     from datetime import timedelta
     # Enable eval mode.
     model.eval()
+    if first_method:
+        with profiler.profile(record_shapes=True, use_cuda=False) as prof:
+            with torch.no_grad():  # Disable gradient computation for inference
+                output = model(inputs)
+        print(prof.key_averages().table(sort_by="self_cpu_time_total"))
+        return
     # Do warmup for 10 iterations.
     for i in range(warmup):
         preds = model(inputs)
@@ -230,7 +236,7 @@ def test(cfg):
         # Build the video model and print model statistics.
         model = build_model(cfg)
         
-        test_loader = loader.construct_loader(cfg, "val")
+        test_loader = loader.construct_loader(cfg, "test")
         logger.info("Testing model for {} iterations".format(len(test_loader)))
         
         for inputs, *_ in test_loader:
@@ -245,13 +251,13 @@ def test(cfg):
             for inputs, *_ in test_loader:
                 break
             preds = model(inputs)
-            # obtain_test_benchmark(model, inputs)
-            flops, params = 0.0, 0.0
-            if du.is_master_proc() and cfg.LOG_MODEL_INFO:
-                model.eval()
-                flops, params = misc.log_model_info(
-                    model, cfg, use_train_input=False
-                )
+            obtain_test_benchmark(model, inputs)
+            # flops, params = 0.0, 0.0
+            # if du.is_master_proc() and cfg.LOG_MODEL_INFO:
+            #     model.eval()
+            #     flops, params = misc.log_model_info(
+            #         model, cfg, use_train_input=False
+            #     )
 
             return None            
 
